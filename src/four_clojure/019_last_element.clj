@@ -122,7 +122,7 @@
 
 ;; nice functional approch with comp and functional composition
 
-(comp first rest)
+(comp first reverse)
 
 ;; normal form of function definition
 
