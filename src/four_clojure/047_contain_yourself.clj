@@ -26,6 +26,14 @@
 ;; `contains?` is a predicate function, in that it returns a boolean answer, either true or false
 ;; It is convention to name the predicate functions with a question mark, `?`, at the end of their name.
 
+;; The `contains?` function processes the different data structures in their own ways
+
+;; set - does it contain the value
+;; map - does it contain a key of the value
+;; vector - does it contain a value at the index
+;; list - does it contain a value at the index
+
+
 
 ;; Alternative - `some`
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
