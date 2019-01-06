@@ -44,8 +44,16 @@
    (drop size data)])
 
 
-;; Abstracting higher
+;; Trying with partition - partial success
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; The first test will pass using partition
+(partition 3 [1 2 3 4 5 6])
 
+;; however other tests will fail as its not a uniform split, so we need to use a lower level of abstraction
+
+
+;; Abstracting higher with `juxt` function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Takes a set of functions and returns a fn that is the juxtaposition
 ;; of those fns.  The returned fn takes a variable number of args, and
 ;; returns a vector containing the result of applying each fn to the
