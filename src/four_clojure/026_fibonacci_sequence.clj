@@ -367,3 +367,15 @@
 ;; The loop construct takes a series of bindings, which provide initial values, and one or more body forms.
 ;; In any of these body forms, a call to recur will cause the loop to be called recursively with the
 ;; provided arguments.
+
+
+;; Using a lazy sequence
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; seems to hammer the computer when taking 100
+
+(defn fib-lazy []
+  (cons 0 (cons 1 (lazy-seq (map + (fib-lazy) (rest (fib-lazy)))))))
+
+
+(take 100 (fib-lazy))
