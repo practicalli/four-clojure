@@ -100,6 +100,8 @@
 
 ;; Oh, thats not right.  It feels close, but how to merge correctly?
 
+(identity 5)
+(identity "hello")
 
 ;; changing track a little
 ;; lets use a variation of partition called partition-by
