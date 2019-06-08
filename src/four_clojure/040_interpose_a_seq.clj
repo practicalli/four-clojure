@@ -25,6 +25,12 @@
 ;; The function should place the value in between the elements of the collection,
 ;; but not before the first element or after the last element of the collection.
 
+(apply str
+       (reverse "jenny"))
+;; => "ynnej"
+
+(clojure.string/reverse "jenny")
+;; => "ynnej"
 
 ;; REPL experiments
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,6 +72,7 @@
                 value))
        new-collection)))
  0 [1 2 3])
+;; => [1 0 2 0]
 
 ;; nearly right...
 
@@ -124,6 +131,7 @@
        [(first collection) value]
        (impose value (rest collection)))))
  0 [1 2 3])
+;; => (1 0 2 0 3)
 
 
 
@@ -140,6 +148,8 @@
      (interleave collection (repeat value))))
  0 [1 2 3])
 
+(butlast [1 0 2 0 3 0])
+;; => (1 0 2 0 3)
 
 
 (fn [value collection]
@@ -149,6 +159,7 @@
 ((fn [value collection]
    (next (interleave (repeat value) collection)))
  0 [1 2 3])
+;; => (1 0 2 0 3)
 
 
 ;; Mapcat
@@ -168,3 +179,7 @@
 
 (fn [value collection]
   (next (interleave (repeat value) collection)))
+
+(fn [value collection]
+  (butlast
+    (interleave collection (repeat value))))
