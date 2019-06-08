@@ -40,16 +40,23 @@
 
 (partition 2 [1 2 3 4 5 6 7 8])
 ;; => ((1 2) (3 4) (5 6) (7 8))
-;; => ((1 2) (3 4) (5 6) (7 8))
 
 (partition 2 3 [1 2 3 4 5 6 7 8])
 ;; => ((1 2) (4 5) (7 8))
 
 (flatten
- (partition 2 3 [1 2 3 4 5 6 7 8]))
+  (partition 2 3 [1 2 3 4 5 6 7 8]))
 ;; => (1 2 4 5 7 8)
 
+
+(fn [collection step]
+  (flatten (partition (dec step) step collection)))
+
 #(flatten (partition (dec %2) %2 %1))
+
+
+(partition 2 [1 2 3])
+;; => ((1 2))
 
 ;; This passes the first two tests, however, we are dropping some of the values
 ;; in the third test as its not a complete partition.
@@ -91,6 +98,10 @@
 ;; This passes all tests and gives a Code Golf Score of 34
 
 
+
+(partition-all 2 [1 2 3])
+;; => ((1 2) (3))
+
 ;; Rather than using a pad value with partition,
 ;; we can use partition-all which does not drop incomplete partitions
 ;; this gives a nice abstraction of partition with a pad
@@ -98,11 +109,37 @@
 #(flatten (partition-all (dec %2) %2 %1))
 
 
+;; Other Answers
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Keep indexed
+
+(fn [s x]
+  (keep-indexed
+    (fn [i a] (when (> (mod (inc i) x) 0) a))
+    s))
+
+((fn [s x]
+   (keep-indexed
+     (fn [i a] (when (> (mod (inc i) x) 0) a))
+     s))
+ [1 2 3 4 5 6 7 8] 3)
+
 
 ;; Answers summary
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Most readable answer
+
+
+
+
+#(apply concat (partition-all (dec %2) %2 %1))
+
+
+(fn [collection step]
+  (flatten (partition-all (dec step) step collection)))
+
 
 #(flatten (partition-all (dec %2) %2 %1))
 
