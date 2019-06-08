@@ -33,6 +33,14 @@
 ;; Put simply its a sequence of elements.
 ;; Elements can be numbers, characters, strings, symbols, function calls, etc
 
+;; 1 2 3 4 5
+
+'(1 2 3 4 5)
+;; as a linked list
+
+;; 6 -> 1 -> 2 -> 3 -> 4 -> 5
+
+
 ;; Lists and Vectors can both be used as sequences
 ;; There are common functions that work with sequences
 ;; `first`, `rest`, `conj`, ...
@@ -40,9 +48,13 @@
 
 ;; our test data are all seqs
 
-[1 2 3]
+[1 2 3 4]
 
 [:a :b :c]
+
+(take 10
+      (range))
+;; => (0 1 2 3 4 5 6 7 8 9)
 
 
 ;; Interleave
@@ -65,6 +77,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; `map` - Iterating through two (or more) sequences
 
+(map + [1 2 3] [4 5 6 7])
+;; => (5 7 9)
+
 ;; form of map
 ;; (map function sequence)
 ;; (map function sequence)
@@ -75,6 +90,13 @@
   [1 2 3]
   [:a :b :c])
 ;; => ([1 :a] [2 :b] [3 :c])
+
+(map
+  (fn [seq1 seq2] seq1 seq2)
+  [1 2 3]
+  [:a :b :c])
+;; => (:a :b :c)
+
 
 ;; We have the right combinations of values, but not the right shape of data
 
@@ -105,10 +127,6 @@
 ;; as map returns a single sequence.
 ;; So we need to use concat over the elements of the sequence
 
-#_(map concat
-       ([1 :a] [2 :b] [3 :c]))
-;; Wrong number of args (2) passed to: PersistentVector
-;; Dont forget the quote !!
 
 (map concat
      '([1 :a] [2 :b] [3 :c]))
@@ -164,17 +182,23 @@
 
 
 (vector 1 2)
+;; => [1 2]
 
 
 (vector [1 2] [3 4])
+;; => [[1 2] [3 4]]
 
 
 
-(mapcat vec '([1 :a] [2 :b] [3 :c]))
+(mapcat vector [1 2 3] [:a :b :c])
+;; => (1 :a 2 :b 3 :c)
 
 
 ;; References
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Clojure collections - Purelyfunctional.tv
+;; https://purelyfunctional.tv/guide/clojure-collections/
+
 ;; Don't mix lazy and eager evaluation
 ;; https://stuartsierra.com/2015/04/26/clojure-donts-concat
 
