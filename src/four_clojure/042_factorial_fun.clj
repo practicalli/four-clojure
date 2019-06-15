@@ -44,7 +44,7 @@
 
 ;; Let us write the multiplies out in full:
 
-;; 7 × 6 × 5 × 4 × 3 × 2 × 14 × 3 × 2 × 1   =  7 × 6 × 5
+;; 7 × 6 × 5 × 4 × 3 × 2 × 1 divided by 4 × 3 × 2 × 1   =  7 × 6 × 5
 
 ;; When dividing one factorial by another, you simply take away the numbers that are in both progressions.
 ;; So the 4 × 3 × 2 × 1 is "dropped", leaving only 7 × 6 × 5.
@@ -81,7 +81,7 @@
         (* total current-number)))))
 
 ;; Test this function with an argument
-;; 5 should give 120 as a result
+;; 5! should give 120 as a result
 ((fn [number]
    (loop [current-number number
           total          1]
@@ -101,6 +101,9 @@
 ;; `range` will generate an incremental set of numbers
 ;; range is exclusive of the end number
 ;; so we would need to increment the number given as an argument
+
+(range 1 (inc 10))
+
 
 (fn progression [number]
   (range 1 (inc number)))
