@@ -25,10 +25,8 @@
 ;; REPL experiments
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
 ;; The challenge says reverse interleave,
 ;; so lets see if there is an interleave funciton
-
 
 ;; https://clojuredocs.org/clojure.core/interleave
 
@@ -44,10 +42,13 @@
 (interleave)
 
 (interleave [1 2])
+;; => (1 2)
 
 (interleave [1 2] [3 4])
+;; => (1 3 2 4)
 
 (interleave [1 2] [3 4] [5 6])
+;; => (1 3 5 2 4 6)
 
 
 ;; Change the shape of our collection so it works with interleave
@@ -57,6 +58,7 @@
 ;; partition will split a collection into sub-sequences
 
 (partition 2 [1 2 3 4 5 6])
+;; => ((1 2) (3 4) (5 6))
 
 
 ;; This gives us the right shape for our data for interleave,
@@ -103,12 +105,14 @@
       :let   [one (first values)
               two (second values)]]
   [one two])
+;; => ([1 2] [3 4] [5 6])
 
 
 (for [values (partition 2 [1 2 3 4 5 6])
       :let   [one (first values)
               two (second values)]]
   (interleave [one two]))
+;; => ((1 2) (3 4) (5 6))
 
 
 
@@ -116,11 +120,13 @@
       one    (map first values)
       two    (map second values)]
   (conj one two))
+;; => ((2 4 6) 1 3 5)
 
 (let [values (partition 2 [1 2 3 4 5 6])
       one    (map first values)
       two    (map second values)]
   (concat one two))
+;; => (1 3 5 2 4 6)
 
 
 (let [values (partition 2 [1 2 3 4 5 6])
@@ -140,11 +146,13 @@
 ;; then we can can generate the right values
 
 (map list '(1 2) '(3 4) '(5 6))
+;; => ((1 3 5) (2 4 6))
 
 
 
 ;; this is just like adding values from collections together with `+`
 (map + '(1 2) '(3 4) '(5 6))
+;; => (9 12)
 
 
 
@@ -152,7 +160,11 @@
 ;; a single list containing partitions
 ;; so we dont get the right answer
 
+
+(map list ('(1 2) '(3 4) '(5 6)))
+
 (map list (partition 2 [1 2 3 4 5 6]))
+;; => (((1 2)) ((3 4)) ((5 6)))
 
 
 
@@ -167,6 +179,7 @@
 ;; has the right shape of arguments (individual collections)
 
 (apply map list (partition 2 [1 2 3 4 5 6]))
+;; => ((1 3 5) (2 4 6))
 
 
 ;; To write this for our 4Clojure challenge
@@ -180,6 +193,7 @@
 ((fn [collection number]
    (apply map list (partition number collection)))
  [1 2 3 4 5 6] 2)
+;; => ((1 3 5) (2 4 6))
 
 
 
@@ -207,6 +221,7 @@
 ;; If we transform the code in the way that apply works
 
 (map list '(1 2) '(3 4) '(5 6))
+;; => ((1 3 5) (2 4 6))
 
 
 ;; apply strips out the outer list of the result from partition
