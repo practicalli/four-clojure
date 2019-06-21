@@ -98,3 +98,6 @@
 
 ;; Lowest golf score
 (fn [f] #(f %2 %1))
+
+
+;; NOTE: nesting the #() inside another #() just gets very confusing and probably will not work correctly
