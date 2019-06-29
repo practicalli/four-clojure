@@ -100,21 +100,20 @@
 
        ;; else if there are still numbers in the collection
        (recur
-        ;; temporary-sub for building a sequence of consecutive numbers
-        (cond
-          (=    temporary-sub              [])                           [(first remaining-collection)]
-          (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
-          (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)])
+         ;; temporary-sub for building a sequence of consecutive numbers
+         (cond
+           (=    temporary-sub              [])                           [(first remaining-collection)]
+           (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
+           (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)])
 
-        ;; sub-collection holds the largest sequence found so far
-        (if (> (count temporary-sub) (count sub-collection))
-          temporary-sub
-          sub-collection)
+         ;; sub-collection holds the largest sequence found so far
+         (if (> (count temporary-sub) (count sub-collection))
+           temporary-sub
+           sub-collection)
 
-        ;; remaining collection
-        (rest remaining-collection)))))
+         ;; remaining collection
+         (rest remaining-collection)))))
  [2 3 3 4 5])
-;; => [3 4 5]
 
 
 ((fn longest-sub [collection]
@@ -133,27 +132,26 @@
        ;; we need to evaluate which is bigger when processing the last value from the original collection.
        ;; If all the sub-sequences are the same lenght, then we need to return an empty collection (as in the final test)
        (cond
-         (> (count temporary-sub) (count sub-collection)) temporary-sub
-         (> (count sub-collection) (count temporary-sub)) sub-collection
+         (> (count temporary-sub) (count sub-collection))   temporary-sub
+         (> (count sub-collection) (count temporary-sub))   sub-collection
          (= 1 (count temporary-sub) (count sub-collection)) [])
 
        ;; else if there are still numbers in the collection
        (recur
-        ;; temporary-sub for building a sequence of consecutive numbers
-        (cond
-          (=    temporary-sub              [])                           [(first remaining-collection)]
-          (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
-          (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)])
+         ;; temporary-sub for building a sequence of consecutive numbers
+         (cond
+           (=    temporary-sub              [])                           [(first remaining-collection)]
+           (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
+           (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)])
 
-        ;; sub-collection holds the largest sequence found so far
-        (if (> (count temporary-sub) (count sub-collection))
-          temporary-sub
-          sub-collection)
+         ;; sub-collection holds the largest sequence found so far
+         (if (> (count temporary-sub) (count sub-collection))
+           temporary-sub
+           sub-collection)
 
-        ;; remaining collection
-        (rest remaining-collection)))))
+         ;; remaining collection
+         (rest remaining-collection)))))
  [7 6 5 4])
-;; => []
 
 
 ;; Whew... that was quite a lot of work and a lot of code for someone to maintain.
@@ -212,11 +210,15 @@
 ;; We still have one pair that does not increase,
 ;; so we can filter that out using another function
 
+(filter odd? [1 2 3 4 5])
+;; => (1 3 5)
+
+
 (filter
- (fn [[[number1 number2]]]
-   (< number1 number2))
- (partition-by #(apply < %)
-               (partition 2 1 [1 0 1 2 3 0 4 5])))
+  (fn [[[number1 number2]]]
+    (< number1 number2))
+  (partition-by #(apply < %)
+                (partition 2 1 [1 0 1 2 3 0 4 5])))
 ;; => (((0 1) (1 2) (2 3))
 ;;     ((0 4) (4 5)))
 
@@ -229,10 +231,10 @@
 
 (sort-by count >
          (filter
-          (fn [[[number1 number2]]]
-            (< number1 number2))
-          (partition-by #(apply < %)
-                        (partition 2 1 [1 0 1 2 3 0 4 5]))))
+           (fn [[[number1 number2]]]
+             (< number1 number2))
+           (partition-by #(apply < %)
+                         (partition 2 1 [1 0 1 2 3 0 4 5]))))
 ;; => (((0 1) (1 2) (2 3)) ((0 4) (4 5)))
 
 ;; No change in the order of elements returned in this example,
@@ -240,12 +242,12 @@
 ;; So lets get the first element
 
 (first
- (sort-by count >
-          (filter
-           (fn [[[number1 number2]]]
-             (< number1 number2))
-           (partition-by #(apply < %)
-                         (partition 2 1 [1 0 1 2 3 0 4 5])))))
+  (sort-by count >
+           (filter
+             (fn [[[number1 number2]]]
+               (< number1 number2))
+             (partition-by #(apply < %)
+                           (partition 2 1 [1 0 1 2 3 0 4 5])))))
 ;; => ((0 1) (1 2) (2 3))
 
 
