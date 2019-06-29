@@ -65,17 +65,16 @@
          (cond
            (=    temporary-sub              [])                           [(first remaining-collection)]
            (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
-           (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)]
+           (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)])
 
-           ;; sub-collection holds the largest sequence found so far
-           (if (> (count temporary-sub) (count sub-collection))
-             temporary-sub
-             sub-collection))
+         ;; sub-collection holds the largest sequence found so far
+         (if (> (count temporary-sub) (count sub-collection))
+           temporary-sub
+           sub-collection)
 
          ;; remaining collection
          (rest remaining-collection)))))
  [1 0 1 2 3 0 4 5])
-;; => [0 1 2 3]
 
 ;; passes the first two tests, but fails the third test.  Returns [2 3] for the third test, instead of [3 4 5] because we drop out of the loop without checking if the temporary-sub is larger than the sub-collection.
 
