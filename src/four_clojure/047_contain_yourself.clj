@@ -77,7 +77,7 @@
 
 ;; to add to the confusion we can make it look like its working,
 ;; if the index is the same as the values then we get true
-(contains? [0 1 2 3 4 5] 5)
+(contains? [0 1 2 3 4 0] 5)
 ;; => true
 
 
@@ -86,12 +86,16 @@
 
 ;; So if I key is in the collection, then its true.
 (contains? {4 :a 2 :b} 4)
+;; => true
 
 
 ;; The not function inverts the boolean result,
 ;; so although contains? gives false, the not function turns that to true.
 (not (contains? [1 2 4] 4))
+;; => true
 
+(not false)
+;; => true
 
 
 ;; Answers summary

@@ -36,7 +36,8 @@
 
 ;; The short-hand syntax for a function definition
 
-(fn [number] (+ 3 number))
+(fn [number]
+  (+ 3 number))
 
 ;; So we are just adding three.
 
@@ -48,6 +49,8 @@
 ;; => (1 4 7 10 13)
 
 
+(take 50 (iterate #(+ 3 %) 1))
+;; => (1 4 7 10 13 16 19 22 25 28 31 34 37 40 43 46 49 52 55 58 61 64 67 70 73 76 79 82 85 88 91 94 97 100 103 106 109 112 115 118 121 124 127 130 133 136 139 142 145 148)
 
 ;; Answers summary
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

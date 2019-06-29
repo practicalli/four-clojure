@@ -21,6 +21,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; How to write a function that returns a function
 
+
+;; (fn higher-order
+;;   [arg]
+;;   (fn [a b]
+;;     (+ a b)))
+
+;; (higher-order intial val-a val-b)
+;; ((fn [a b]
+;;    (+ a b))
+;;  val-a val-b)
+
 ;; (fn [arg]
 ;;   (fn [arg2 arg3]
 ;;     (str "The outer function returns the inner function definition")))

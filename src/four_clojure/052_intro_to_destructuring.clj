@@ -29,6 +29,7 @@
 ;; for a start and stop point of the line.
 
 (def my-line [[5 10] [10 20]])
+;; => #'four-clojure.052-intro-to-destructuring/my-line
 
 
 ;; We can use the let function to pull out the individual x and y values
@@ -39,7 +40,8 @@
       y1     (second point1)
       x2     (first point2)
       y2     (second point2)]
-  (println "Line from (" x1 "," y1 ") to (" x2 ", " y2 ")"))
+  (str "Line from (" x1 "," y1 ") to (" x2 ", " y2 ")"))
+;; => "Line from (5,10) to (10, 20)"
 
 
 ;; This leads to a lot of code and we can simplify this using destructuring
@@ -49,12 +51,14 @@
 (let [[point1 point2] my-line
       [x1 y1]         point1
       [x2 y2]         point2]
-  (println "Line from (" x1 "," y1 ") to (" x2 ", " y2 ")"))
+  (str "Line from (" x1 "," y1 ") to (" x2 ", " y2 ")"))
+;; => "Line from (5,10) to (10, 20)"
 
 ;; we can use a more specific pattern and simplify the code even further
 
-(let [[[x1 y1] [x2 y2]] my-line]
-  (println "Line from (" x1 "," y1 ") to (" x2 ", " y2 ")"))
+(let [[[x2 y1] [x2 y2]] my-line]
+  (str "Line from (" x1 "," y1 ") to (" x2 ", " y2 ")"))
+;; => "Line from (5,10) to (10, 20)"
 
 ;; So using the right pattern we can simplify the extraction of values into local names.
 

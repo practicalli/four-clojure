@@ -146,6 +146,9 @@
 
 (cycle [1 2 3 4 5])
 
+;; 1 2 3 4 5 1 2 3 4 5
+;; . . s       e
+
 
 ;; `cycle` is not very useful by itself.
 ;; we can use `cycle` with take and drop to fetch the right number of values
@@ -166,7 +169,7 @@
 
 ;; Lets use the example 2 and [1 2 3 4 5]
 
-(drop 2
+(drop (mod 2 (count [1 2 3 4 5]))
       (take (+ (mod 2 (count [1 2 3 4 5])) (count [1 2 3 4 5]))
             (cycle [1 2 3 4 5])))
 

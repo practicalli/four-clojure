@@ -28,6 +28,7 @@
 
 
 ;; We could group by identity, this simply returns a duplicate of all the values though
+
 (group-by identity [1 :a 2 :b 3 :c])
 ;; => {1 [1], :a [:a], 2 [2], :b [:b], 3 [3], :c [:c]}
 
