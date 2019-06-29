@@ -17,11 +17,25 @@
 ;; Deconstruct the problem
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; This challenge took quite a bit of thinking about as its quite an imperative problem, which can easily lead to an imperative solution.
+;; This challenge took quite a bit of thinking about as its quite an
+;; imperative problem, which can easily lead to an imperative solution.
 
-;; Initial reading of the challenge suggests we iterate through the given collection values, keeping a record of each sub sequence as we go.  This can easily lead to use state and I was tempted at one point to use an atom.
+;; Initial reading of the challenge suggests we iterate through the
+;; given collection values, keeping a record of each sub sequence as we go.
 
-;; By transforming the data to more relevantly shaped structures we can used simpler functions (algorithms) to create the desired results.
+;; This suggests we need to keep state not just for each sub-sequence
+;; but also keeping the value of the previous element as we find consecutive sub-sequences.
+
+;; By transforming the data to more relevantly shaped structures
+;; hopefully we can used simpler functions to create the desired results.
+
+
+;; Basic algorithm:
+;; Find the consecutive sub-sequences in a given collection
+
+;; e.g. [1 0 1 2 3 0 4 5] would contain [(1) (0 1 2 3) (0) (4 5)]
+
+;; Then find the longest sub-sequence
 
 
 ;; REPL experiments
@@ -47,19 +61,19 @@
 
        ;; else if there are still numbers in the collection
        (recur
-        ;; temporary-sub for building a sequence of consecutive numbers
-        (cond
-          (=    temporary-sub              [])                           [(first remaining-collection)]
-          (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
-          (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)]
+         ;; temporary-sub for building a sequence of consecutive numbers
+         (cond
+           (=    temporary-sub              [])                           [(first remaining-collection)]
+           (=    (inc (last temporary-sub)) (first remaining-collection)) (conj temporary-sub (first remaining-collection))
+           (not= (inc (last temporary-sub)) (first remaining-collection)) [(first remaining-collection)]
 
-          ;; sub-collection holds the largest sequence found so far
-          (if (> (count temporary-sub) (count sub-collection))
-            temporary-sub
-            sub-collection))
+           ;; sub-collection holds the largest sequence found so far
+           (if (> (count temporary-sub) (count sub-collection))
+             temporary-sub
+             sub-collection))
 
-        ;; remaining collection
-        (rest remaining-collection)))))
+         ;; remaining collection
+         (rest remaining-collection)))))
  [1 0 1 2 3 0 4 5])
 ;; => [0 1 2 3]
 
@@ -167,6 +181,9 @@
 ;; Partition into pairs, one step at a time,
 ;; so each pair of numbers can be compared
 
+(partition 2 [1 0 1 2 3 0 4 5])
+;; => ((1 0) (1 2) (3 0) (4 5))
+
 (partition 2 1 [1 0 1 2 3 0 4 5])
 ;; => ((1 0) (0 1) (1 2) (2 3) (3 0) (0 4) (4 5))
 
@@ -245,8 +262,8 @@
 ;; then we will get the right result
 
 (concat
- (first [[0 1] [1 2] [2 3]])
- (map last (rest [[0 1] [1 2] [2 3]])))
+  (first [[0 1] [1 2] [2 3]])
+  (map last (rest [[0 1] [1 2] [2 3]])))
 ;; => (0 1 2 3)
 
 
