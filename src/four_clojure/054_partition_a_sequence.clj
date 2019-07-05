@@ -243,17 +243,45 @@
  3 (range 9))
 
 
+;; This does not work for the third test though
+
+((fn [sub-sequence-size xs]
+   (for [start-point (range 0 (count xs) sub-sequence-size)]
+     (take sub-sequence-size (drop start-point xs))))
+ 3 (range 8))
+
+
+;; We can calculate how many complete sub-sequences there are in the sequence
+
+(quot (count (range 8)) 3)
+
+;; Then we can run our list comprehension over just those complete start points
+
+(fn [sub-sequence-size xs]
+  (let [complete-sub-sequences (quot (count xs) sub-sequence-size)]
+    (for [start-point (take complete-sub-sequences
+                            (range 0 (count xs) sub-sequence-size))]
+      (take sub-sequence-size
+            (drop start-point xs)))))
+
+((fn [sub-sequence-size xs]
+   (let [complete-sub-sequences (quot (count xs) sub-sequence-size)]
+     (for [start-point (take complete-sub-sequences
+                             (range 0 (count xs) sub-sequence-size))]
+       (take sub-sequence-size
+             (drop start-point xs)))))
+ 3 (range 8))
 
 
 ;; Answers summary
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;(
 
-;; list comprehension solution
 
-(fn [sub-sequence-size xs]
-  (for [start-point (range 0 (count xs) sub-sequence-size)]
-    (take sub-sequence-size (drop start-point xs))))
 
+(fn [n x]
+  (let [h (quot (count x) n)]
+    (for [i (take h (range 0 (count x) n))]
+      (take n (drop i x)))))
 
 
 ;; loop recur solution
