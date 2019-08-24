@@ -52,6 +52,8 @@
 ;; a reduce that takes an empty maps and the grouped elements of the sequence
 ;; associates the existing key with the result of calling the count function on the value into the new map
 
+{:k "v" ,,,,}
+
 (reduce
   (fn [xs [k v]]
     (assoc xs k (count v)))

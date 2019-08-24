@@ -48,7 +48,6 @@
 ;; The `(6 7)` sub-sequence is returned this time, even though it does not have 3 items.
 (partition-all 3 (range 8))
 ;; => ((0 1 2) (3 4 5) (6 7))
-                                        ;
 
 
 ;; REPL experiments
@@ -102,18 +101,19 @@
 (conj [] [0 1 2])
 
 (conj (conj [] [0 1 2])
-[3 4 5])
+      [3 4 5])
 
 (conj
   (conj (conj [] [0 1 2])
         [3 4 5])
   [6 7 8])
+;; => [[0 1 2] [3 4 5] [6 7 8]]
 
 
 ;; lets test the function definition
 
 ((fn [-sub-sequence-size
-     xs]
+      xs]
    (loop [-sub-sequences []
           -sequence      xs]
 
@@ -193,6 +193,11 @@
 ;; so if our sub-sequences should be size 3 and the sequence is size 9,
 ;; we can create the following
 
+(range 0 9 1)
+;; => (0 1 2 3 4 5 6 7 8)
+
+(range 0 9 2)
+
 (range 0 9 3)
 ;; => (0 3 6)
 
@@ -224,23 +229,27 @@
 (fn [sub-sequence-size xs]
   (for [start-point (range 0 (count xs) sub-sequence-size)]
     (str "Start point " start-point)))
+;; => #function[four-clojure.054-partition-a-sequence/eval12307/fn--12308]
 
 
 ((fn [sub-sequence-size xs]
    (for [start-point (range 0 (count xs) sub-sequence-size)]
      (str "Start point: " start-point)))
  3 (range 9))
+;; => ("Start point: 0" "Start point: 3" "Start point: 6")
 
 
 (fn [sub-sequence-size xs]
   (for [start-point (range 0 (count xs) sub-sequence-size)]
     (take sub-sequence-size (drop start-point xs))))
+;; => #function[four-clojure.054-partition-a-sequence/eval12343/fn--12344]
 
 
 ((fn [sub-sequence-size xs]
    (for [start-point (range 0 (count xs) sub-sequence-size)]
      (take sub-sequence-size (drop start-point xs))))
  3 (range 9))
+;; => ((0 1 2) (3 4 5) (6 7 8))
 
 
 ;; This does not work for the third test though
@@ -249,11 +258,15 @@
    (for [start-point (range 0 (count xs) sub-sequence-size)]
      (take sub-sequence-size (drop start-point xs))))
  3 (range 8))
+;; => ((0 1 2) (3 4 5) (6 7))
 
 
 ;; We can calculate how many complete sub-sequences there are in the sequence
 
 (quot (count (range 8)) 3)
+;; => 2
+
+(rem (count (range 10)) 3)
 
 ;; Then we can run our list comprehension over just those complete start points
 
@@ -274,9 +287,7 @@
 
 
 ;; Answers summary
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;(
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (fn [n x]
   (let [h (quot (count x) n)]
