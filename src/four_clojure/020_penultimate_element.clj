@@ -68,6 +68,11 @@
 
 (comp second reverse)
 
+;; Using the first 4Clojure test we would have
+
+((comp second reverse) (list 1 2 3 4 5))
+;; => 4
+
 
 ;; and we could even use the low level loop and recur approach, but this doent really give us any advantage.
 
