@@ -168,6 +168,8 @@
 ;; Then we can drop the extra numbers at the start that have been already added to the end.
 
 ;; Lets use the example 2 and [1 2 3 4 5]
+;; as covered in the maths section, we can use mod to find the right values for `take` and `drop`
+
 
 (drop (mod 2 (count [1 2 3 4 5]))
       (take (+ (mod 2 (count [1 2 3 4 5])) (count [1 2 3 4 5]))

@@ -75,3 +75,24 @@
 
 ;; or it its short form
 #(first (drop %2 %1))
+
+
+(defn swapping [collection number] (first (drop number collection)))
+
+(swapping '(4 5 6 7) 2)
+
+
+;; (= (__ '(4 5 6 7) 2) 6)
+
+
+
+((fn [& args]
+   (first (drop (second args) (first args))))
+ '(4 5 6 7) 2)
+
+((fn [xs n]
+   (first (drop n xs)))
+ '(4 5 6 7) 2)
+
+(#(first (drop %2 %1))
+  '(4 5 6 7) 2)

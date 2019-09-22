@@ -133,6 +133,32 @@
  0 [1 2 3])
 ;; => (1 0 2 0 3)
 
+((fn impose [value collection]
+   (cond
+     (>= 1 (count collection)) collection
+     :else
+     (concat
+       [(first collection) value]
+       ((fn impose [value collection]
+          (cond
+            (>= 1 (count collection)) collection
+            :else
+            (concat
+              [(first collection) value]
+              ((fn impose [value collection]
+                 (cond
+                   (>= 1 (count collection)) collection
+                   :else
+                   (concat
+                     [(first collection) value]
+                     (impose value (rest collection)))))
+               0 [3]))))
+        0 [2 3])
+       )))
+ 0 [1 2 3])
+
+
+
 
 
 ;; Interleave
