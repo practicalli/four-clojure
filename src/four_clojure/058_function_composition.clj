@@ -307,6 +307,20 @@
 
 
 
+(((fn
+    ([] "Nothing to see here")
+    ([f] (str "You wanted to use " f))
+    ([f g]
+     (fn [x]
+       (f (g x))))
+    ([f g h]
+     (fn [& x]
+       (f (g (reduce h x))))))
+  zero? #(mod % 8) +)
+ 3 5 7 9)
+
+
+
 ;; Our code is quite brittle though
 ;; so we could make it more flexible for multiple functions
 
@@ -335,6 +349,18 @@
             (rest (reverse x))  ; %2
             )))
 
+
+;; Calling the function with test 3 from this 4Clojure challenge
+
+(((fn [& x]
+    (fn [& y]
+      (reduce #(%2 %1)
+              (apply (last x) y)  ; %1
+              (rest (reverse x))  ; %2
+              )))
+  zero? #(mod % 8) +)
+ 3 5 7 9)
+;; => true
 
 
 ;; Answers summary
