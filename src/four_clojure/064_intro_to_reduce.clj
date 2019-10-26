@@ -34,13 +34,16 @@
 
 
 (= 15 (reduce + [1 2 3 4 5]))
+;; => true
 
 ;; We can see the single value that this produces
 (reduce + [1 2 3 4 5])
+;; => 15
 
 ;; and we can see how its working it all out using `reductions`
 
 (reductions + [1 2 3 4 5])
+;; => (1 3 6 10 15)
 
 
 (reduce + [1 2 3 4 5])
@@ -48,6 +51,10 @@
 ;; translates to:
 
 (+ (+ (+ (+ 1 2) 3) 4) 5)
+
+(apply + [1 2 3 4 5])
+
+(+ 1 2 3 4 5)
 
 
 ;; References

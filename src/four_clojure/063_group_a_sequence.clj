@@ -7,7 +7,9 @@
 ;; Topics:	core-functions
 ;; Restriction: group-by
 
-;; Given a function f and a sequence s, write a function which returns a map. The keys should be the values of f applied to each item in s. The value at each key should be a vector of corresponding items in the order they appear in s.
+;; Given a function f and a sequence s, write a function which returns a map.
+
+;; The keys should be the values of f applied to each item in s. The value at each key should be a vector of corresponding items in the order they appear in s.
 
 ;; (= (__ #(> % 5) [1 3 6 8]) {false [1 3], true [6 8]})
 ;; (= (__ #(apply / %) [[1 2] [2 4] [4 6] [3 6]]) {1/2 [[1 2] [2 4] [3 6]], 2/3 [[4 6]]})
@@ -36,19 +38,19 @@
 
 ;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L7066
 
-#_(defn group-by
-    "Returns a map of the elements of coll keyed by the result of
+(defn group-by
+  "Returns a map of the elements of coll keyed by the result of
   f on each element. The value at each key will be a vector of the
   corresponding elements, in the order they appeared in coll."
-    {:added  "1.2"
-     :static true}
-    [f coll]
-    (persistent!
-      (reduce
-        (fn [ret x]
-          (let [k (f x)]
-            (assoc! ret k (conj (get ret k []) x))))
-        (transient {}) coll)))
+  {:added  "1.2"
+   :static true}
+  [f coll]
+  (persistent!
+    (reduce
+      (fn [ret x]
+        (let [k (f x)]
+          (assoc! ret k (conj (get ret k []) x))))
+      (transient {}) coll)))
 
 
 ;; the group-by function definition is a reducing function
@@ -110,7 +112,8 @@
 ((fn [f value]
    (let [new-key (f value)]
      {new-key value}))
- #(> % 5) [1 3 6 8])
+ #(> % 5) 1)
+;; => {false 1}
 
 
 ;; Iterating over the collection
@@ -156,6 +159,7 @@
          incorrect-results (remove f value)]
      (hash-map false incorrect-results true correct-results)))
  #(> % 5) [1 3 6 8])
+;; => {true (6 8), false (1 3)}
 
 
 ;; well we can create something that looks like it passes the first test, but its hard coded to only pass the first test
@@ -190,6 +194,7 @@
 ((fn [f xs]
    (for [x xs] {(f x) [x]}))
  #(> % 5) [1 3 6 8])
+;; => ({false [1]} {false [3]} {true [6]} {true [8]})
 
 
 ;; Then merge the result of the `for` function
@@ -206,7 +211,13 @@
 ((fn [f xs]
    (apply merge-with into (for [x xs] {(f x) [x]})))
  #(> % 5) [1 3 6 8])
+;; => {false [1 3], true [6 8]}
 
+
+((fn [f xs]
+   (apply merge-with concat (for [x xs] {(f x) [x]})))
+ #(> % 5) [1 3 6 8])
+;; => {false (1 3), true (6 8)}
 
 
 ;; Answers summary
