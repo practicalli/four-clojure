@@ -23,7 +23,6 @@
 
 
 
-
 ;; Deconstruct the problem
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -410,3 +409,29 @@
 
 (fn -iterate [f x]
   (lazy-seq (cons x (-iterate f (f x)))))
+
+
+
+({:a 0 :b 2} :a)
+
+
+(:a {:a 0 :b 2} )
+
+
+
+({"one" 1 "two" 2}  "one")
+
+(get {"one" 1 "two" 2} "one")
+
+
+(1)
+
+(ifn? '())
+;; => false
+
+(#{1 2 3} 4)
+
+(ifn? #{})
+
+
+(contains? [1 2 3] 3)
