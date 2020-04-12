@@ -1,6 +1,6 @@
 # four-clojure
 
-Discussions of various solutions to the 4Clojure challenges.
+Discussions of various solutions to the [4Clojure challenges](http://www.4clojure.com/).
 
 Rather than just sharing the solutions, or showing off how small a golf score can be attained (there lays madness), these solutions cover various different solutions and offers opinions as to those solutions in terms of readability, abstraction where relevant performance.
 
