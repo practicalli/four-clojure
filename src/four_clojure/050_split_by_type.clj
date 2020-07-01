@@ -56,9 +56,9 @@
 
 ;; `vals` is a handy function that just returns the values, without the keys
 
-(vals
- (group-by type [1 :a 2 :b 3 :c]))
-;; => ([1 2 3] [:a :b :c])
+(vals {1 :a 2 :b 3 :c})
+;; => (:a :b :c)
+
 
 ;; NOTE: you can also just get the keys using the `key` funciton.
 ;; and only specific keys and their values by using select-keys
@@ -67,6 +67,7 @@
 ;; Answers summary
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#_
 (fn [data]
   (vals (group-by type data)))
 
@@ -84,6 +85,7 @@
 (comp (partial map second)
       (partial group-by class))
 
+;; ->> typically used for sequence operations
 #(->> % (group-by type) (vals))
 
 #(map last (group-by type %))
