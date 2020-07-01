@@ -37,6 +37,3 @@ true
 
 (not (false? 1))
 ;; => true
-
-((fn [] true))
-;; => true
