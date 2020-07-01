@@ -104,7 +104,7 @@
 ;; This may look a little complicated at first, as its a polymorphic function.  It does different behaviour depending on the number of arguments passed to the function.
 
 ;; calling this with our 4Clojure test data, the function path with one argument is called
-([x] (first (reverse x)))
+;; ([x] (first (reverse x)))
 
 ;; lets call the function returned by comp with the collection argument from our 4Clojure exercise.
 ((fn
