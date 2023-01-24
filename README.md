@@ -1,6 +1,8 @@
 # four-clojure
 
-Discussions of various solutions to the [4Clojure challenges](http://www.4clojure.com/).
+Discussions of various solutions to the [4Ever Clojure challenges](https://4clojure.oxal.org/) 
+
+> 4Ever Clojure replaces the decommissioned 4clojure.com website and includes the same challenges.
 
 Rather than just sharing the solutions, or showing off how small a golf score can be attained (there lays madness), these solutions cover various different solutions and offers opinions as to those solutions in terms of readability, abstraction where relevant performance.
 
