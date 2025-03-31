@@ -1,5 +1,6 @@
 (ns four-clojure.025-find-the-odd-number)
 
+
 ;; Find the odd numbersSolutions
 ;; Difficulty:	Easy
 ;; Topics:	seqs
@@ -14,21 +15,25 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; We could iterate over the collection and keep only those values that we tested to be odd.
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; `clojure.core` namespace has a function called `odd?`
 ;; which returns a boolean value of `true` if the value is odd
 ;; and `false` if the value is not odd.
 (odd? 1)
+
+
 ;; => true
 
 (odd? 2)
+
+
 ;; => false
 
 ;; NOTE: Function names with a `?` at the end by convention should return a boolean value,
@@ -43,6 +48,8 @@
 ;; we get a sequence showing which elements are odd (true) or not odd (false)
 (map odd?
      [4 2 1 6])
+
+
 ;; => (false false true false)
 
 ;; we could also write this more specifically, using a lambda function
@@ -50,6 +57,8 @@
 
 (map (fn [number] (odd? number))
      [4 2 1 6])
+
+
 ;; => (false false true false)
 
 ;; Although map does correctly find the odd numbers,
@@ -57,12 +66,14 @@
 
 
 ;; `filter` function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; We met the `filter` function in 4Clojure challenge #018
 ;; Filter will create a new sequence by applying a function to a sequence,
 ;; keeping only those values that evaluate to `true` with the given function.
 
 (filter odd? [4 2 1 6])
+
+
 ;; => (1)
 
 ;; There is a similar function called `remove`,
@@ -70,15 +81,19 @@
 ;; evaluate to true with the given function.
 
 (remove odd? [4 2 1 6])
+
+
 ;; => (4 2 6)
 
 
 (filter odd? [4 2 1 6])
+
+
 ;; => (1)
 
-(filter even? [4 2 1 6]);; => (4 2 6)
+(filter even? [4 2 1 6]); => (4 2 6)
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 filter odd?

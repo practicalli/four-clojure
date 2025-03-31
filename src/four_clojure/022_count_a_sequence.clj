@@ -1,7 +1,8 @@
 (ns four-clojure.022-count-a-sequence)
 
+
 ;; #22 Count a Sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs core-functions
@@ -16,14 +17,14 @@
 ;; (= (__ '(:a :b :c)) 3)
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The `count` function would solve this exercise all by itself, but its restricted, so we have a chance to think about how the `count` function works.
 
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; using loop recur
 
@@ -33,6 +34,8 @@
     accumulator
     (recur (rest collection)
            (inc accumulator))))
+
+
 ;; => 5
 
 ;; Wrapping the loop recur in a function will allow us to use it for all our 4Clojure tests
@@ -45,26 +48,29 @@
       (recur (rest collection)
              (inc accumulator)))))
 
+
 ;; This worked for all of the 4Clojure tests in this exercise.
 ;; It is quite procedural and verbose though.
 
 ;; As well as a loop recur, you could also use a recursive function
 ;; This is a little cleaner code, but still a little low level.
 
-(fn -count [xs]
+(fn -count
+  [xs]
   (if (empty? xs)
     0
     (inc (-count (rest xs)))))
 
 
-
 ;; Using reduce and a bit of lateral thinking
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Reducing a function over a collection will give a total value, based on the logic of that function.
 ;; for example
 
 (reduce + [1 2 3 4 5])
+
+
 ;; => 15
 
 ;; the `reduce` function can take a value as an argument as well as a collection.
@@ -81,6 +87,8 @@
 ;; Numbers evaluate to themselves, so if you use a number with or, it will just return the number.
 
 (or 1 2)
+
+
 ;; => 1
 
 ;; using `or` function we can just return the value that we increment each time as we reduce through the collection
@@ -90,6 +98,8 @@
               element))
         0
         [1 2 3 3 1])
+
+
 ;; => 5
 
 
@@ -109,12 +119,13 @@ reduce #(or (inc %) %2) 0
 
 
 ;; A bit more lateral thinking
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; If all the values in our collection were the number one, then we could simply add all the numbers up and get the correct result.
 
 ;; So if we have a collection such as:
 [1 1 1 1 1]
+
 
 ;; we can use the `reduce` function to add up the numbers and get the total number of elements in the collection.
 (reduce + [1 1 1 1 1])
@@ -125,27 +136,41 @@ reduce #(or (inc %) %2) 0
 ;; `constantly` is a very interesting function that will return a specific value, no matter how its used.
 
 (def always-one (constantly 1))
+
+
 ;; => #'four-clojure.022-count-a-sequence/always-one
 
 (always-one)
+
+
 ;; => 1
 
 (= 1 (always-one (* 2 2)))
+
+
 ;; => true
 
 (str (always-one "is always one"))
+
+
 ;; => "1"
 
 ;; So we can map constantly to change all the elements in a collection
 (map (constantly 1) '(4 5 6 7))
+
+
 ;; => (1 1 1 1)
 
 (map (constantly 1) [[1 2] [3 4] [5 6]])
+
+
 ;; => (1 1 1)
 
 ;; map will treat the "hello" string as a collection of characters,
 ;; and constantly will return all those characters as the number 1
 (map (constantly 1) "hello")
+
+
 ;; => (1 1 1 1 1)
 
 
@@ -159,13 +184,14 @@ reduce #(or (inc %) %2) 0
   (reduce +
           (map (constantly 1) collection)))
 
+
 ;; or its short form
 
 #(reduce + (map (constantly 1) %))
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; some nice lateral thinking
 
@@ -174,15 +200,20 @@ reduce #(or (inc %) %2) 0
 
 ;; a reduce using or to just return a counter
 
-reduce (fn [value element]
-         (or (inc value)
-             element))
-       0
+reduce
+
+
+(fn [value element]
+  (or (inc value)
+      element))
+
+
+0
+
 
 ;; we can also write this using the short form of a function definition
 
 reduce #(or (inc %) %2) 0
-
 
 
 ;; a low level loop recur approach

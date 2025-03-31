@@ -1,7 +1,8 @@
 (ns four-clojure.034-implement-range)
 
+
 ;; #034 Implement range
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs core-functions
@@ -13,9 +14,8 @@
 ;; (= (__ -2 2) '(-2 -1 0 1))
 ;; (= (__ 5 8) '(5 6 7))
 
-
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The range function generates a sequence of Integer values
 ;; A start number can be given and is the first value of the returned sequence
@@ -27,15 +27,17 @@
 
 (= (range 1 4) '(1 2 3))
 
+
 ;; So we have to go and implement our own version of the `range` function.
 
-
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Range is pretty straight forward function to use
 
 (range 1 4)
+
+
 ;; => (1 2 3)
 
 ;; Be careful when using `range` without arguments,
@@ -46,16 +48,24 @@
 ;; satisfy take.
 
 (take 10 (range))
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9)
 
 (range 10)
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9)
 
 (range 1 11)
+
+
 ;; => (1 2 3 4 5 6 7 8 9 10)
 
 ;; Range can use a step value to put a gap in between the numbers generated.
 (range 10 100 10)
+
+
 ;; => (10 20 30 40 50 60 70 80 90)
 
 ;; `range` has an interesting edge case,
@@ -63,12 +73,12 @@
 ;; then an empty sequence is returned.
 
 (range 1 1)
+
+
 ;; => ()
 
-
-
 ;; Loop/recur approach
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; loop until you have created the sequence of numbers
 
 (loop [start   1
@@ -76,9 +86,10 @@
        numbers []]
   ;; a condition to end the loop/recur
   (if (= start end)
-    numbers  ;; return the current collection of numbers
-    (recur   ;; call loop with new values for start and numbers
-      (inc start) end (conj numbers start))))
+    numbers  ; return the current collection of numbers
+    (recur   ; call loop with new values for start and numbers
+     (inc start) end (conj numbers start))))
+
 
 ;; Put loop/recur in a function so we can call it with different arguments
 
@@ -90,6 +101,7 @@
       numbers
       (recur (inc -start) -end (conj numbers -start)))))
 
+
 ;; test our function by calling it with arguments
 ((fn [start end]
    (loop [-start  start
@@ -100,6 +112,8 @@
        numbers
        (recur (inc -start) -end (conj numbers -start)))))
  1 4)
+
+
 ;; => [1 2 3]
 
 ;; The loop/recur works (it usually does as its so flexible).
@@ -109,9 +123,8 @@
 ;; 2) It uses several local names which is not as efficient (and naming is hard)
 ;; 3) Its quite a low level of abstraction and we can make it more elegant.
 
-
 ;; range as a recursive function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; A recursive function is a function that calls itself,
 ;; usually with updated values as arguments for each successive call
@@ -123,12 +136,12 @@
 ;; else we add the start value to a vector, along with the result
 ;; of calling `-range` with updated arguments
 
-
 (fn -range
   [start end]
   (if (= start end)
     []
     (conj [] start (-range (inc start) end))))
+
 
 ;; lets call this function with arguments from the first test
 
@@ -137,9 +150,8 @@
    (if (= start end)
      []
      (conj [] start (-range (inc start) end))))
- 1 4) ;; arguments to the function call
+ 1 4) ; arguments to the function call
 ;; => [1 [2 [3 []]]]
-
 
 ;; The call to `-range` within the `conj` expression would
 ;; itself expand to a `conj` expression with specific values
@@ -147,8 +159,9 @@
 ;; So, if we expanded this function call, it would look like this
 
 (conj [] 1 (conj [] (inc 1) (conj [] (inc (inc 1)) [])))
-;; => [1 [2 [3 []]]]
 
+
+;; => [1 [2 [3 []]]]
 
 ;; We have the right values, but the structure is nested,
 ;; `flatten` is a very general way to just have a flat structure.
@@ -159,8 +172,9 @@
      []
      (flatten (conj [] start (-range (inc start) end)))))
  1 4)
-;; => (1 2 3)
 
+
+;; => (1 2 3)
 
 ;; To avoid flattening, we can use `cons` to construct
 ;; the collection we want during the recursion
@@ -171,14 +185,19 @@
 ;; become part of it as we evaluate up the recursive calls.
 
 (cons 1 '())
+
+
 ;; => (1)
 
 (cons 1 '(2))
+
+
 ;; => (1 2)
 
-(cons 1 (cons 2 '()) )
-;; => (1 2)
+(cons 1 (cons 2 '()))
 
+
+;; => (1 2)
 
 ;; Using `cons` does feel a little nicer with recursive functions.
 ;; And we get slightly shorter code
@@ -189,6 +208,7 @@
     '()
     (cons start (-range (inc start) end))))
 
+
 ;; and calling this with 4Clojure test data
 ((fn -range
    [start end]
@@ -196,12 +216,12 @@
      '()
      (cons start (-range (inc start) end))))
  1 4)
+
+
 ;; => (1 2 3)
 
-
-
 ;; Creating the right structure then iterating
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; A more lateral thinking approach to solving this challenge
 ;; is to create the right size of data first,
@@ -210,11 +230,15 @@
 ;; Using `repeat` we can generate any number of a given value
 
 (repeat 5 "Clojure")
+
+
 ;; => ("Clojure" "Clojure" "Clojure" "Clojure" "Clojure")
 
 ;; Taking the start and end values from the first test
 
 (repeat (- 4 1) 1)
+
+
 ;; => (1 1 1)
 
 ;; We get the right structure, three elements in a collection,
@@ -230,13 +254,16 @@
 ;; The index of a collection starts at zero.
 
 (map-indexed + [1 1 1])
+
+
 ;; => (1 2 3)
 
 ;; Using this with the `repeat` function gives the same result
 
 (map-indexed + (repeat (- 4 1) 1))
-;; => (1 2 3)
 
+
+;; => (1 2 3)
 
 ;; Now we put it in a function definition,
 ;; so we can take the arguments for each 4Clojure test
@@ -245,9 +272,8 @@
   (map-indexed + (repeat (- end start) start)))
 
 
-
 ;; Creating a lazy sequence and taking the values we need
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; My preferred approach is to generate a lazy sequence of numbers,
 ;; starting from the start value.
@@ -262,14 +288,17 @@
 ;; We use `take` to control how many elements iterate will create in the sequence.
 
 (take 5 (iterate inc 0))
+
+
 ;; => (0 1 2 3 4)
 
 ;; Using values from the first 4Clojure test:
 
 (take (- 4 1)
       (iterate inc 1))
-;; => (1 2 3)
 
+
+;; => (1 2 3)
 
 ;; lets make this work for all the tests by putting it in a function definition
 
@@ -282,11 +311,12 @@
    (take (- end start)
          (iterate inc start)))
  1 4)
+
+
 ;; => (1 2 3)
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; My preferred answer
 
@@ -294,12 +324,15 @@
 (fn [start end]
   (take (- end start)
         (iterate inc start)))
+
+
 ;; golf-score of 48
 
 ;; or golf-score obsessed version
 #(take (- %2 %) (iterate inc %))
-;; golf-score of 26
 
+
+;; golf-score of 26
 
 ;; Creating the right structure then updating the values using their index values
 
@@ -314,6 +347,7 @@
   (if (= start end)
     '()
     (cons start (-range (inc start) end))))
+
 
 ;; low level loop/recur
 

@@ -1,5 +1,6 @@
 (ns four-clojure.001-nothing-but-the-truth)
 
+
 ;; Difficulty:	Elementary
 ;; Topics:
 
@@ -8,9 +9,8 @@
 
 ;; (= __ true)
 
-
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; This is a very simple challenge that allows you to explore what is true (or false).
 
@@ -18,22 +18,35 @@
 
 ;; The simple answer is to use the boolean type called true.  However, we can explore other ways of expressing true and false values.
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Very Readable
 true
 
+
 ;; Over thought but interesting
 (not false)
+
+
 ;; => true
 
 (not nil)
+
+
 ;; => true
 
+(not 1)
+
+
+;; => false
+
 (true? 1)
+
+
 ;; => false
 
 (not (false? 1))
+
+
 ;; => true

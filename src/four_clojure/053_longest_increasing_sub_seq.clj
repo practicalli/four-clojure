@@ -1,7 +1,8 @@
 (ns four-clojure.053-longest-increasing-sub-seq)
 
+
 ;; #053 Longest increasing sub-sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Hard
 ;; Topics:	seqs
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; This challenge took quite a bit of thinking about as its quite an
 ;; imperative problem, which can easily lead to an imperative solution.
@@ -39,20 +40,21 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Taking a low abstraction approach with loop and recur
 
 ;; Our function takes the collection to be processed as an argument.
 
-((fn longest-sub [collection]
+((fn longest-sub
+   [collection]
    (loop
-       ;; `temporary-sub` is the current sub-sequence being processed
-       ;; `sub-collection` will contain the sub-sequences found
-       ;; `remaining-collection` is used to iterate through the collection
-       [temporary-sub        []
-        sub-collection       []
-        remaining-collection collection]
+     ;; `temporary-sub` is the current sub-sequence being processed
+     ;; `sub-collection` will contain the sub-sequences found
+     ;; `remaining-collection` is used to iterate through the collection
+     [temporary-sub        []
+      sub-collection       []
+      remaining-collection collection]
 
      (if (empty? remaining-collection)
 
@@ -76,18 +78,20 @@
          (rest remaining-collection)))))
  [1 0 1 2 3 0 4 5])
 
+
 ;; passes the first two tests, but fails the third test.  Returns [2 3] for the third test, instead of [3 4 5] because we drop out of the loop without checking if the temporary-sub is larger than the sub-collection.
 
 
 ;; works for all tests except the last one...
-((fn longest-sub [collection]
+((fn longest-sub
+   [collection]
    (loop
-       ;; `temporary-sub` is the current sub-sequence being processed
-       ;; `sub-collection` will contain the sub-sequences found
-       ;; `remaining-collection` is used to iterate through the collection
-       [temporary-sub        []
-        sub-collection       []
-        remaining-collection collection]
+     ;; `temporary-sub` is the current sub-sequence being processed
+     ;; `sub-collection` will contain the sub-sequences found
+     ;; `remaining-collection` is used to iterate through the collection
+     [temporary-sub        []
+      sub-collection       []
+      remaining-collection collection]
 
      ;; If no more numbers in the collection, return the current sub-collection
      (if (empty? remaining-collection)
@@ -116,14 +120,15 @@
  [2 3 3 4 5])
 
 
-((fn longest-sub [collection]
+((fn longest-sub
+   [collection]
    (loop
-       ;; `temporary-sub` is the current sub-sequence being processed
-       ;; `sub-collection` will contain the sub-sequences found
-       ;; `remaining-collection` is used to iterate through the collection
-       [temporary-sub        []
-        sub-collection       []
-        remaining-collection collection]
+     ;; `temporary-sub` is the current sub-sequence being processed
+     ;; `sub-collection` will contain the sub-sequences found
+     ;; `remaining-collection` is used to iterate through the collection
+     [temporary-sub        []
+      sub-collection       []
+      remaining-collection collection]
 
      ;; If no more numbers in the collection, return the current sub-collection
      (if (empty? remaining-collection)
@@ -151,7 +156,7 @@
 
          ;; remaining collection
          (rest remaining-collection)))))
- [7 6 5 4])
+ [7 6 5 4 5 4 5 5 5 5 6 7 8 9])
 
 
 ;; Whew... that was quite a lot of work and a lot of code for someone to maintain.
@@ -161,17 +166,24 @@
 ;; thinking through the algorithm again, a more functional approach would be something like:
 
 (let [sequence [1 0 1 2 3 0 4 5]]
-  ;; divide into a growing sequence of numbers [[1] [1 0] [1 0 1 2]]
-  ;; sort-by count
-  ;; reverse
-  ;; first
-  )
+     ;; divide into a growing sequence of numbers [[1] [1 0] [1 0 1 2]]
+     ;; sort-by count
+     ;; reverse
+     ;; first
+     )
 
 
+(defn fish
+  "Very pathetic doc string to test lsp"
+  []
+  (map inc [1 2 3]))
+
+
+(fish)
 
 
 ;; Solving #53 with partitioning and filters
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Can we group the numbers together so they are grouped sequentially?
 
 ;; Lets partition the first collection
@@ -179,9 +191,13 @@
 ;; so each pair of numbers can be compared
 
 (partition 2 [1 0 1 2 3 0 4 5])
+
+
 ;; => ((1 0) (1 2) (3 0) (4 5))
 
 (partition 2 1 [1 0 1 2 3 0 4 5])
+
+
 ;; => ((1 0) (0 1) (1 2) (2 3) (3 0) (0 4) (4 5))
 
 ;; We have a simple partition of the collection
@@ -194,12 +210,16 @@
 ;; As each pair is in a collection then we need to map over each vector of tha tcollection
 
 (map #(apply < %) [[1 0] [0 1] [1 2]])
+
+
 ;; => (false true true)
 
 ;; So this gives us a promising looking function to partition with
 
 (partition-by #(apply < %)
               (partition 2 1 [1 0 1 2 3 0 4 5]))
+
+
 ;; (((1 0))
 ;; ((0 1) (1 2) (2 3)) ((3 0))
 ;; ((0 4) (4 5)))
@@ -211,6 +231,8 @@
 ;; so we can filter that out using another function
 
 (filter odd? [1 2 3 4 5])
+
+
 ;; => (1 3 5)
 
 
@@ -219,6 +241,8 @@
     (< number1 number2))
   (partition-by #(apply < %)
                 (partition 2 1 [1 0 1 2 3 0 4 5])))
+
+
 ;; => (((0 1) (1 2) (2 3))
 ;;     ((0 4) (4 5)))
 
@@ -235,6 +259,8 @@
              (< number1 number2))
            (partition-by #(apply < %)
                          (partition 2 1 [1 0 1 2 3 0 4 5]))))
+
+
 ;; => (((0 1) (1 2) (2 3)) ((0 4) (4 5)))
 
 ;; No change in the order of elements returned in this example,
@@ -248,6 +274,8 @@
                (< number1 number2))
              (partition-by #(apply < %)
                            (partition 2 1 [1 0 1 2 3 0 4 5])))))
+
+
 ;; => ((0 1) (1 2) (2 3))
 
 
@@ -255,6 +283,8 @@
 
 ;; We cant just flatten, as we have extra values
 (flatten [[0 1] [1 2] [2 3]])
+
+
 ;; => (0 1 1 2 2 3)
 
 
@@ -265,6 +295,8 @@
 (concat
   (first [[0 1] [1 2] [2 3]])
   (map last (rest [[0 1] [1 2] [2 3]])))
+
+
 ;; => (0 1 2 3)
 
 
@@ -278,12 +310,14 @@
          sorted      (first (sort-by count > filtered))]
      (concat (first sorted) (map last (rest sorted)))))
  [1 0 1 2 3 0 4 5])
+
+
 ;; => (0 1 2 3)
 
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Partition and Filter approach (medium abstraction)
 
@@ -294,31 +328,31 @@
     (concat (first c) (map last (rest c)))))
 
 
-
 ;; loop recur approach (low level of abstraction)
 
-(fn longest-sub [collection]
-   (loop
-       ;; `temporary-sub` is the current sub-sequence being processed
-       ;; `sub-collection` will contain the sub-sequences found
-       ;; `remaining-collection` is used to iterate through the collection
-       [temporary-sub        []
-        sub-collection       []
-        remaining-collection collection]
+(fn longest-sub
+  [collection]
+  (loop
+    ;; `temporary-sub` is the current sub-sequence being processed
+    ;; `sub-collection` will contain the sub-sequences found
+    ;; `remaining-collection` is used to iterate through the collection
+    [temporary-sub        []
+     sub-collection       []
+     remaining-collection collection]
 
-     ;; If no more numbers in the collection, return the current sub-collection
-     (if (empty? remaining-collection)
+    ;; If no more numbers in the collection, return the current sub-collection
+    (if (empty? remaining-collection)
 
-       ;; As the temporary-sub value doesnt get compared until the recur call,
-       ;; we need to evaluate which is bigger when processing the last value from the original collection.
-       ;; If all the sub-sequences are the same lenght, then we need to return an empty collection (as in the final test)
-       (cond
-         (> (count temporary-sub) (count sub-collection)) temporary-sub
-         (> (count sub-collection) (count temporary-sub)) sub-collection
-         (= 1 (count temporary-sub) (count sub-collection)) [])
+      ;; As the temporary-sub value doesnt get compared until the recur call,
+      ;; we need to evaluate which is bigger when processing the last value from the original collection.
+      ;; If all the sub-sequences are the same lenght, then we need to return an empty collection (as in the final test)
+      (cond
+        (> (count temporary-sub) (count sub-collection)) temporary-sub
+        (> (count sub-collection) (count temporary-sub)) sub-collection
+        (= 1 (count temporary-sub) (count sub-collection)) [])
 
-       ;; else if there are still numbers in the collection
-       (recur
+      ;; else if there are still numbers in the collection
+      (recur
         ;; temporary-sub for building a sequence of consecutive numbers
         (cond
           (=    temporary-sub              [])                           [(first remaining-collection)]
@@ -334,15 +368,14 @@
         (rest remaining-collection)))))
 
 
-
 ;; Interesting 4Clojure answers
 
 (fn [s]
   (->>
-   (for [a (range (count s))
-         b (range (inc a) (count s))]
-     (subvec s a (inc b)))
-   (filter #(apply < %))
-   (sort-by count >)
-   first
-   vec))
+    (for [a (range (count s))
+          b (range (inc a) (count s))]
+      (subvec s a (inc b)))
+    (filter #(apply < %))
+    (sort-by count >)
+    first
+    vec))

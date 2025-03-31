@@ -1,7 +1,8 @@
 (ns four-clojure.040-interpose-a-seq)
 
+
 ;; #040 Interpose a seq
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs core-functions
@@ -16,7 +17,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Write a function that takes two arguments, a value and a collection
 
@@ -27,13 +28,17 @@
 
 (apply str
        (reverse "jenny"))
+
+
 ;; => "ynnej"
 
 (clojure.string/reverse "jenny")
+
+
 ;; => "ynnej"
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; Interpose works, but we cannot use it
@@ -46,7 +51,7 @@
 
 
 ;; loop / recur
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; with loop recur comes a lot of lines of code
 
 (fn [value collection]
@@ -72,6 +77,8 @@
                 value))
        new-collection)))
  0 [1 2 3])
+
+
 ;; => [1 0 2 0]
 
 ;; nearly right...
@@ -89,12 +96,14 @@
        (conj new-collection
              (first current-collection)))))
  0 [1 2 3])
+
+
 ;; => [1 0 2 0 3]
 
 
 
 ;; Recursive function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Let get a little more abstract
 
 
@@ -103,6 +112,7 @@
           (first collection)
           value
           (impose 0 (rest collection))))
+
 
 ;; infinite loop, doh!
 #_((fn impose [value collection]
@@ -113,8 +123,8 @@
    0 [1 2 3])
 
 
-
-(fn impose [value collection]
+(fn impose
+  [value collection]
   (cond
     (>= 1 (count collection)) collection
     :else
@@ -123,7 +133,8 @@
       (impose value (rest collection)))))
 
 
-((fn impose [value collection]
+((fn impose
+   [value collection]
    (cond
      (>= 1 (count collection)) collection
      :else
@@ -131,21 +142,26 @@
        [(first collection) value]
        (impose value (rest collection)))))
  0 [1 2 3])
+
+
 ;; => (1 0 2 0 3)
 
-((fn impose [value collection]
+((fn impose
+   [value collection]
    (cond
      (>= 1 (count collection)) collection
      :else
      (concat
        [(first collection) value]
-       ((fn impose [value collection]
+       ((fn impose
+          [value collection]
           (cond
             (>= 1 (count collection)) collection
             :else
             (concat
               [(first collection) value]
-              ((fn impose [value collection]
+              ((fn impose
+                 [value collection]
                  (cond
                    (>= 1 (count collection)) collection
                    :else
@@ -153,28 +169,28 @@
                      [(first collection) value]
                      (impose value (rest collection)))))
                0 [3]))))
-        0 [2 3])
-       )))
+        0 [2 3]))))
  0 [1 2 3])
 
 
-
-
-
 ;; Interleave
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 (fn [value collection]
   (butlast
     (interleave collection (repeat value))))
 
+
 ((fn [value collection]
    (butlast
      (interleave collection (repeat value))))
  0 [1 2 3])
 
+
 (butlast [1 0 2 0 3 0])
+
+
 ;; => (1 0 2 0 3)
 
 
@@ -185,26 +201,25 @@
 ((fn [value collection]
    (next (interleave (repeat value) collection)))
  0 [1 2 3])
+
+
 ;; => (1 0 2 0 3)
 
 
 ;; Mapcat
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn [value collection]
   (drop 1 (mapcat #(list value %) collection)))
 
 
-
-
-
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 (fn [value collection]
   (next (interleave (repeat value) collection)))
+
 
 (fn [value collection]
   (butlast

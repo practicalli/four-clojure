@@ -1,7 +1,8 @@
 (ns four-clojure.002-simple-math)
 
+
 ;; Simple Math
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Difficulty:	Elementary
 ;; Topics: numbers, arithmetic
 
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Polish notation is where the operator (+, -, /, *) is placed before the numbers.
 
@@ -29,29 +30,37 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The maths in the expression is relatively basic, but to be sure you can copy the calculation into the REPL.
 
 (- 10 (* 2 3))
+
+
 ;; => 4
 
 ;; To break that down further, take the innermost expression and evaluate
 
 (* 2 3)
+
+
 ;; => 6
 
 ;; Then substitute that expression with the result (your editor may also provide this feature, eg. in Spacemacs CIDER its `, e w`)
 
 (- 10 6)
+
+
 ;; => 4
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Most readable answer
 4
+
+
 ;; => 4
 
 ;; Overthought answers
@@ -66,6 +75,8 @@
 ;; Least valuable answer
 
 (- 10 (* 2 3))
+
+
 ;; => 4
 
 ;; The question itself asks you not to use this as an answer

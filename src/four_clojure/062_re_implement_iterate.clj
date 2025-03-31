@@ -1,7 +1,8 @@
 (ns four-clojure.062-re-implement-iterate)
 
+
 ;; #062 Re-implement Iterate
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs core-functions
@@ -15,17 +16,22 @@
 
 
 (= (take 5 (iterate #(* 2 %) 1)) [1 2 4 8 16])
+
+
 ;; => true
 (= (take 100 (iterate inc 0)) (take 100 (range)))
+
+
 ;; => true
 (= (take 9 (iterate #(inc (mod % 3)) 1)) (take 9 (cycle [1 2 3])))
-;; => true
 
+
+;; => true
 
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Implementation of iterate function in clojure.core
 
@@ -45,7 +51,7 @@
 
 
 ;; What is a side effect free function?
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; - uses only the data it is given via its arguments when called
 ;; - does not use shared data
 ;; - does not use anything defined outside of the function definition
@@ -53,7 +59,7 @@
 
 
 ;; Laziness in Clojure
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Clojure is an eager language, when you call most functions, they return a result immediately.
 
@@ -77,9 +83,10 @@
 
 
 ;; What is a lazy sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (1 2 3 4 5 "string" ,,,)
+
 
 ;; A lazy sequence is a sequence of values (collection of data)
 ;; that is only realised (loaded into computer memory)
@@ -88,6 +95,8 @@
 ;; Classic example
 
 (take 24 (range))
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23)
 
 ;; (range) will eagerly (opposite of lazy) generate all the integers to infinity
@@ -99,7 +108,7 @@
 
 
 ;; From a basic implementation perspective
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; lazy sequences are a sequence
 ;; a sequence in clojure is a linked list
@@ -117,9 +126,8 @@
 
 
 
-
 ;; The lazy-seq function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L2853
 
 ;; This code looks a little complicate,
@@ -159,7 +167,7 @@
 
 
 ;; Using seq as a test for an empty sequence / collection
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; We can use the return value of the `seq` function
 ;; to determine if a sequence / collection is empty
@@ -176,15 +184,19 @@
 
 ;; If a collection has values then its returned as a sequence
 (seq [1 2 3 4])
+
+
 ;; => (1 2 3 4)
 
 ;; If a collection is empty, then nil is returned.
 (seq [])
+
+
 ;; => nil
 
 
 ;; Use `when-let` to conditional bind a local name
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; `when-let` will create a local binding and execute the expressions it wraps
 ;; if the test is truthy
@@ -214,6 +226,8 @@
 
 (when-let [value (= 1 1)]
   (str "when-let conditional local binding: " value))
+
+
 ;; => "when-let conditional local binding: true"
 
 
@@ -221,6 +235,8 @@
 
 (when-let [value (seq [1 2 3 4 5])]
   (str "when-let conditional local binding: " value))
+
+
 ;; => "when-let conditional local binding: (1 2 3 4 5)"
 
 
@@ -228,6 +244,8 @@
 
 (when-let [value (seq [])]
   (str "when-let conditional local binding: " value))
+
+
 ;; => nil
 
 
@@ -235,34 +253,43 @@
 
 (when-let [value nil]
   (str "when-let conditional local binding: " value))
+
+
 ;; => nil
 
 
 
 ;; implementing a function that returns a lazy sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; the simplest way to implement a function that returns a lazy sequence
 ;; is to wrap the function body in a call to `lazy-seq`
 
 ;; A function that returns a lazy sequence using lazy-seq funciton
 
-(fn lazy-function []
+(fn lazy-function
+  []
   (lazy-seq (range)))
+
 
 ;; range is eager, but putting a lazy-seq around it makes the function lazy
 
 (first
-  ((fn lazy-function []
+  ((fn lazy-function
+     []
      (lazy-seq (range)))))
+
+
 ;; => 0
 
 
 (take 10
-      ((fn lazy-function []
+      ((fn lazy-function
+         []
          (lazy-seq (range)))))
-;; => (0 1 2 3 4 5 6 7 8 9)
 
+
+;; => (0 1 2 3 4 5 6 7 8 9)
 
 
 
@@ -272,7 +299,8 @@
 ;; f is the argument for our function
 ;; x is the starting value for the sequence we are going to generate.
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (lazy-seq
     (cons [] x (-iterate f x))))
 
@@ -280,10 +308,11 @@
 ;; Test this function with `inc` and the start value of `0`
 
 (take 10
-      ((fn -iterate [f x]
+      ((fn -iterate
+         [f x]
          (lazy-seq
            (cons [x] (-iterate f x))))
-       inc 0));; => ([0] [0] [0] [0] [0] [0] [0] [0] [0] [0])
+       inc 0)); => ([0] [0] [0] [0] [0] [0] [0] [0] [0] [0])
 
 ;; We are creating a sequence, however, we are not feeding the value
 ;; back into the `-iterate` funciton
@@ -298,7 +327,8 @@
 ;; Add the `let` to our `-iterate` function
 ;; value is now the result of applying the function `f` to the value `x`
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (let [value (f x)]
     (lazy-seq
       (cons value (-iterate f value)))))
@@ -307,70 +337,88 @@
 ;; run the same test again
 
 (take 10
-      ((fn -iterate [f x]
+      ((fn -iterate
+         [f x]
          (let [value (f x)]
            (lazy-seq
              (cons x (-iterate f value)))))
        inc 0))
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9)
 
 ;; success!
 
 ;; creating our 4Clojure solution
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; define a function that takes two arguments
 
 (fn [f x])
+
 
 ;; then take the parameters and call the function with the value
 
 (fn [f x]
   (let [new (f x)]))
 
+
 ;; now we need to call the function again with the new value
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (let [new (f x)]
     (-iterate f new)))
+
 
 ;; we need to capture the result of the function called with the value each times
 ;; ensuring we capture the initial value
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (let [new (f x)]
-    (cons x(-iterate f new))))
+    (cons x (-iterate f new))))
+
 
 ;; now we need to make it lazy so that calling our -iterate funciton doesnt
 ;; go on forever
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (let [new (f x)]
     (lazy-seq
-      (cons x(-iterate f new)))))
+      (cons x (-iterate f new)))))
+
 
 ;; now we can call our -iterate function
 ;; and give it some context on the number of values to generate
 ;; by using the take function
 
 (take 100
-      ((fn -iterate [f x]
+      ((fn -iterate
+         [f x]
          (let [new (f x)]
            (lazy-seq
-             (cons x(-iterate f new)))))
+             (cons x (-iterate f new)))))
        inc 0))
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99)
 
 (take 100
-      ((fn -iterate [f value]
+      ((fn -iterate
+         [f value]
          (lazy-seq
            (cons value (f (f value)))))
        inc 0))
 
+
 ;; Refine the example by dropping the let which doesnt really add much
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (lazy-seq (cons x (iterate f (f x)))))
+
 
 ;; (-iterate f (f x))
 ;; (-iterate f (-iterate f (f (f x))))
@@ -378,13 +426,13 @@
 
 ;; Refine the example using lazy-cat, which removes the need for an explicit cons function
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (lazy-cat [x] (-iterate f (f x))))
 
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Useful references on Lazy sequences
 ;; https://clojuredesign.club/episode/030-lazy-does-it/
@@ -395,18 +443,22 @@
 ;; creates a lazy sequence
 ;; from concatenating the results of each iteration
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (lazy-cat [x] (-iterate f (f x))))
 
 
 ;; using cons to assemble the results and an explicit `lazy-seq`
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (let [new (f x)]
     (lazy-seq
       (cons x (-iterate f new)))))
 
+
 ;; using cons without the let function
 
-(fn -iterate [f x]
+(fn -iterate
+  [f x]
   (lazy-seq (cons x (-iterate f (f x)))))

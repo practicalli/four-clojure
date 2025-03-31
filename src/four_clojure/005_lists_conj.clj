@@ -1,7 +1,8 @@
 (ns four-clojure.005-lists-conj)
 
+
 ;; Lists: conj
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Elementary
 ;; Topics:
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Joining values on to a collection (sequence).
 
@@ -23,28 +24,38 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 (conj '(2 3 4) 1)
+
+
 ;; => (1 2 3 4)
 
 (conj '(3 4) 2 1)
+
+
 ;; => (1 2 3 4)
 
 ;; the above is also conceptually the same as
 
 (conj
- (conj '(3 4) 2)                        ; returns (2 3 4)
- 1)
+  (conj '(3 4) 2)                        ; returns (2 3 4)
+  1)
+
+
 ;; => (1 2 3 4)
 
 ;; So we could simply use '(1 2 3 4) as the answer.
 
 (= '(1 2 3 4) (conj '(2 3 4) 1))
+
+
 ;; => true
 
 (= '(1 2 3 4) (conj '(3 4) 2 1))
+
+
 ;; => true
 
 
@@ -53,24 +64,34 @@
 ;; then it is efficient to add values to the end of the sequence.
 
 (conj [2 3 4] 1)
+
+
 ;; => [2 3 4 1]
 
 (conj [3 4] 2 1)
+
+
 ;; => [3 4 2 1]
 
 ;; You can use a vector as the answer though, as the `=` function is checking the values
 ;; and not the underlying type of the collection.
 
 (= [1 2 3 4] (conj '(2 3 4) 1))
+
+
 ;; => true
 
 (= [1 2 3 4] (conj '(3 4) 2 1))
+
+
 ;; => true
 
 
 ;; conj does not work with maps, as they are an associative collection
 
 (conj {:a 1 :b 2 :c 3} :d 4)
+
+
 ;; => IllegalArgumentException
 ;; Don't know how to create ISeq from: clojure.lang.Keyword
 
@@ -80,21 +101,24 @@
 ;; sets are useful to check if a value is contained in a set of numbers
 
 (conj #{1 2 3} 4)
+
+
 ;; => #{1 4 3 2}
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Most readable answer
 [1 2 3 4]
 '(1 2 3 4)
 
+
 ;; Overthought answers
 
 (conj
- (conj '(3 4) 2)
- 1)
+  (conj '(3 4) 2)
+  1)
 
 
 ;; Least valuable answer

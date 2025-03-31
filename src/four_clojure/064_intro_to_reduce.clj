@@ -1,7 +1,8 @@
 (ns four-clojure.064-intro-to-reduce)
 
+
 ;; #64 Intro to Reduce
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Elementary
 ;; Topics:	seqs
@@ -23,7 +24,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; With some simple mathematics, we can solve the 4Clojure tests fairly easily.
 
@@ -34,19 +35,26 @@
 
 
 (= 15 (reduce + [1 2 3 4 5]))
+
+
 ;; => true
 
 ;; We can see the single value that this produces
 (reduce + [1 2 3 4 5])
+
+
 ;; => 15
 
 ;; and we can see how its working it all out using `reductions`
 
 (reductions + [1 2 3 4 5])
+
+
 ;; => (1 3 6 10 15)
 
 
 (reduce + [1 2 3 4 5])
+
 
 ;; translates to:
 
@@ -58,14 +66,13 @@
 
 
 ;; References
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; https://clojuredocs.org/clojure.core/reduce
 ;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L6730
 
 
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; +

@@ -1,7 +1,8 @@
 (ns four-clojure.054-partition-a-sequence)
 
+
 ;; #054 Partition a Sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Medium
 ;; Topics:	seqs core-functions
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Write a function that takes a number and sequence as an argument
 
@@ -28,30 +29,42 @@
 ;; This is the behaviour of the `partition` function in `clojure.core`
 
 (partition 3 (range 9))
+
+
 ;; => ((0 1 2) (3 4 5) (6 7 8))
 
 (partition 2 (range 8))
+
+
 ;; => ((0 1) (2 3) (4 5) (6 7))
 
 ;; When the partition is not evenly divisible by the size of the sequence, partition drops the incomplete sub-sequence
 (partition 3 (range 8))
+
+
 ;; => ((0 1 2) (3 4 5))
 
 ;; `partition-all` works in the same way, however, it will keep incomplete sub-sequences
 
 (partition-all 3 (range 9))
+
+
 ;; => ((0 1 2) (3 4 5) (6 7 8))
 
 (partition-all 2 (range 8))
+
+
 ;; => ((0 1) (2 3) (4 5) (6 7))
 
 ;; The `(6 7)` sub-sequence is returned this time, even though it does not have 3 items.
 (partition-all 3 (range 8))
+
+
 ;; => ((0 1 2) (3 4 5) (6 7))
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; loop recur
@@ -84,12 +97,12 @@
         (drop -sub-sequence-size -sequence)))))
 
 
-
 ;; logic of the `if` expression
 
 (if (< (count (range 9)) 3)
   :stop
   :continue)
+
 
 (if (< (count (range 1)) 3)
   :stop
@@ -100,13 +113,17 @@
 
 (conj [] [0 1 2])
 
+
 (conj (conj [] [0 1 2])
       [3 4 5])
+
 
 (conj
   (conj (conj [] [0 1 2])
         [3 4 5])
   [6 7 8])
+
+
 ;; => [[0 1 2] [3 4 5] [6 7 8]]
 
 
@@ -135,14 +152,12 @@
  3 (range 9))
 
 
-
 ;; recursive function
 
 
 
-
 ;; group-by
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; `(group-by f coll)`
 ;; Returns a map of the elements of coll keyed by the result of
@@ -151,10 +166,14 @@
 
 
 (group-by odd? (range 9))
+
+
 ;; => {false [0 2 4 6 8], true [1 3 5 7]}
 
 
 (group-by identity (range 9))
+
+
 ;; => {0 [0], 7 [7], 1 [1], 4 [4], 6 [6], 3 [3], 2 [2], 5 [5], 8 [8]}
 
 
@@ -162,15 +181,16 @@
 
 
 ;; partition-by - similar issue to group-by
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;
 
 
 
 ;; take and drop approach
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (take 3 (range 9))
+
+
 ;; => (0 1 2)
 
 (take 3 [1 2])
@@ -180,6 +200,7 @@
 
 (take 3 (drop 3 (range 9)))
 
+
 ;; if we can identify start points for each sub-sequence,
 ;; then we can take just the number of elements for a sub-sequence
 ;; then repeat until the end.
@@ -188,17 +209,20 @@
 |----| |---| |---|
 
 
-
 ;; The `range` function has an optional argument that is a step size
 ;; so if our sub-sequences should be size 3 and the sequence is size 9,
 ;; we can create the following
 
 (range 0 9 1)
+
+
 ;; => (0 1 2 3 4 5 6 7 8)
 
 (range 0 9 2)
 
 (range 0 9 3)
+
+
 ;; => (0 3 6)
 
 ;; This gives the starting point of each of the sub-sequences
@@ -207,9 +231,8 @@
 
 
 
-
 ;; List comprehension - `for`
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; `for` is a macro for iterating though a sequence and creating a new structure.
 
@@ -229,6 +252,8 @@
 (fn [sub-sequence-size xs]
   (for [start-point (range 0 (count xs) sub-sequence-size)]
     (str "Start point " start-point)))
+
+
 ;; => #function[four-clojure.054-partition-a-sequence/eval12307/fn--12308]
 
 
@@ -236,12 +261,16 @@
    (for [start-point (range 0 (count xs) sub-sequence-size)]
      (str "Start point: " start-point)))
  3 (range 9))
+
+
 ;; => ("Start point: 0" "Start point: 3" "Start point: 6")
 
 
 (fn [sub-sequence-size xs]
   (for [start-point (range 0 (count xs) sub-sequence-size)]
     (take sub-sequence-size (drop start-point xs))))
+
+
 ;; => #function[four-clojure.054-partition-a-sequence/eval12343/fn--12344]
 
 
@@ -249,6 +278,8 @@
    (for [start-point (range 0 (count xs) sub-sequence-size)]
      (take sub-sequence-size (drop start-point xs))))
  3 (range 9))
+
+
 ;; => ((0 1 2) (3 4 5) (6 7 8))
 
 
@@ -258,15 +289,20 @@
    (for [start-point (range 0 (count xs) sub-sequence-size)]
      (take sub-sequence-size (drop start-point xs))))
  3 (range 8))
+
+
 ;; => ((0 1 2) (3 4 5) (6 7))
 
 
 ;; We can calculate how many complete sub-sequences there are in the sequence
 
 (quot (count (range 8)) 3)
+
+
 ;; => 2
 
 (rem (count (range 10)) 3)
+
 
 ;; Then we can run our list comprehension over just those complete start points
 
@@ -276,6 +312,7 @@
                             (range 0 (count xs) sub-sequence-size))]
       (take sub-sequence-size
             (drop start-point xs)))))
+
 
 ((fn [sub-sequence-size xs]
    (let [complete-sub-sequences (quot (count xs) sub-sequence-size)]
@@ -287,7 +324,7 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn [n x]
   (let [h (quot (count x) n)]

@@ -1,7 +1,8 @@
 (ns four-clojure.060-sequence-reductions)
 
+
 ;; # 060 Sequence Reductions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Medium
 ;; Topics:	seqs core-functions
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; 1) write a reducing function
 ;; 2) rather than just the final result, return all the intermediary values too
@@ -24,12 +25,18 @@
 ;; that function can be used as the answer
 
 (= (take 5 (reductions + (range))) [0 1 3 6 10])
+
+
 ;; => true
 
 (= (reductions conj [1] [2 3 4]) [[1] [1 2] [1 2 3] [1 2 3 4]])
+
+
 ;; => true
 
 (= (last (reductions * 2 [3 4 5])) (reduce * 2 [3 4 5]) 120)
+
+
 ;; => true
 
 
@@ -39,6 +46,8 @@
 ;; lets look at some simpler reductions examples
 
 (reductions + (range 10))
+
+
 ;; => (0 1 3 6 10 15 21 28 36 45)
 
 
@@ -47,12 +56,14 @@
 
 (= (reduce + (range 10))
    (last (reductions + (range 10))))
+
+
 ;; => true
 
 
 
 ;; reduce source code
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; To understand the reduce function, we can look at the source code
 ;; The code is quite involved though
@@ -77,13 +88,14 @@
      (.reduce ^clojure.lang.IReduceInit coll f val)
      (clojure.core.protocols/coll-reduce coll f val))))
 
+
 (extend-protocol clojure.core.protocols/IKVReduce
   nil
   (kv-reduce
     [_ f init]
     init)
 
-  ;;slow path default
+  ;; slow path default
   clojure.lang.IPersistentMap
   (kv-reduce
     [amap f init]
@@ -100,7 +112,7 @@
 
 
 ;; reductions source code
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; We can look at the reductions source code for ideas
 ;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L7134
@@ -123,12 +135,13 @@
              (when-let [s (seq coll)]
                (reductions f (f init (first s)) (rest s))))))))
 
+
 ;; reductions is also a recursive call,
 ;; except it adds each result onto a lazy sequence
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 
@@ -144,6 +157,7 @@
   (conj (f (first xs))
         (my-reductions f (rest xs))))
 
+
 ;; using the essence of the first test
 
 #_((fn my-reductions
@@ -152,6 +166,7 @@
            (my-reductions f (rest xs))))
    +
    (range 5))
+
 
 ;; This kind of works, however it causes a stack overflow as there is nothing to break out of the recursion
 
@@ -165,15 +180,23 @@
 
 
 (first [1])
+
+
 ;; => 1
 
 (rest [1])
+
+
 ;; => ()
 
 (rest [])
+
+
 ;; => ()
 
 (rest [1 2 3 4 5])
+
+
 ;; => (2 3 4 5)
 
 (fn my-reductions
@@ -192,6 +215,8 @@
 ;; The original problem statement says we should return a lazy sequence
 
 (take 10 (range))
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9)
 
 
@@ -204,7 +229,6 @@
        (cons acc (my-reductions f (f acc (first xs)) (rest xs)))))))
 
 
-
 ((fn my-reductions
    ([f xs] (my-reductions f (first xs) (rest xs)))
    ([f acc xs]
@@ -214,11 +238,13 @@
         (cons acc (my-reductions f (f acc (first xs)) (rest xs)))))))
  +
  (range 5))
+
+
 ;; => (0 1 3 6 10)
 
 
 ;; understanding lazyness in Clojure
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; https://clojuredocs.org/clojure.core/lazy-seq
 ;; http://clojure-doc.org/articles/language/laziness.html
@@ -231,7 +257,7 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn my-reductions
   ([f xs] (my-reductions f (first xs) (rest xs)))

@@ -1,7 +1,8 @@
 (ns four-clojure.026-fibonacci-sequence)
 
+
 ;; #26 - Fibonacci Sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; http://www.4clojure.com/problem/26#prob-title
 ;; Difficulty:	Easy
@@ -14,18 +15,21 @@
 #_(= (__ 6) '(1 1 2 3 5 8))
 #_(= (__ 8) '(1 1 2 3 5 8 13 21))
 
-;;;; Some references
+
+;; Some references
 ;; https://en.wikipedia.org/wiki/Fibonacci_number
 ;; http://squirrel.pl/blog/2010/07/26/corecursion-in-clojure/
 
 ;; NOTE: use a fibonacci sequence to draw a spiral using SVG for the clojurebridge exercises
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; First though is that we want to generate a range of numbers
 
 (range 1 6)
+
+
 ;; => (1 2 3 4 5)
 
 ;; Looking at the range source code does not help that much as range is just a wrapper for clojure.lang.Range which is a Java class.
@@ -35,16 +39,21 @@
 (fn [lenght-of-series]
   (take lenght-of-series [1 1 2 3 5 8 13 21]))
 
+
 ;; Calling with up to 8 values will return the correct result.
 ((fn [lenght-of-series]
    (take lenght-of-series [1 1 2 3 5 8 13 21]))
  8)
+
+
 ;; => (1 1 2 3 5 8 13 21)
 
 ;; This is of course easy to break by requiring a greater number of values than hard coded.
 ((fn [lenght-of-series]
    (take lenght-of-series [1 1 2 3 5 8 13 21]))
  9)
+
+
 ;; => (1 1 2 3 5 8 13 21)
 
 
@@ -57,51 +66,65 @@
 ;; The function takes the size of fibonacci sequence to generate as an argument
 ;; and creates a local name to represent the initial fibonacci sequence.
 
-(fn fibbonacci [length-of-series]
+(fn fibbonacci
+  [length-of-series]
   (let [fib [1 1]]
     fib))
 
 
 ;; lets call the function with a lenght of 3
 
-((fn fibbonacci [length-of-series]
+((fn fibbonacci
+   [length-of-series]
    (let [fib [1 1]]
      fib)) 3)
+
+
 ;; => [1 1]
 
 ;; Add test to see if the fibonacci sequence is big enough and iterate if its too small.
-(fn fibbonacci [length-of-series]
+(fn fibbonacci
+  [length-of-series]
   (let [fib [1 1]]
     (if (< (count fib) length-of-series)
       "iterate... to implement"
       fib)))
 
+
 ;; Now we just need to iterate until we get a big enough fibonacci sequence
 ;; A simple way to iterate is to use loop recur, as we only only pass the length-of-series of fibonacci to generate as an argument to the function we are writing.
 ;; In each iteration we conjoin the result of adding all the values in the fib sequence together.
 
-(fn fibonacci [length-of-series]
+(fn fibonacci
+  [length-of-series]
   (loop [fib [1 1]]
     (if (< (count fib) length-of-series)
       (recur (conj fib (reduce + fib)))
       fib)))
 
+
 ;; Test our function, generating a fibonacci sequence of length-of-series 3
-((fn fibs [length-of-series]
+((fn fibs
+   [length-of-series]
    (loop [fib [1 1]]
      (if (< (count fib) length-of-series)
        (recur (conj fib (reduce + fib)))
        fib)))
  3)
+
+
 ;; => [1 1 2]
 
 ;; Test our function, generating a fibonacci sequence of length-of-series 6
-((fn fibs [length-of-series]
+((fn fibs
+   [length-of-series]
    (loop [fib [1 1]]
      (if (< (count fib) length-of-series)
        (recur (conj fib (reduce + fib)))
        fib)))
  6)
+
+
 ;; => [1 1 2 4 8 16]
 
 ;; Although this generates a sequence of the right length-of-series, it is not the fibonacci sequence.
@@ -110,53 +133,68 @@
 ;; Change our recur to take the last and second to last values from the current value of fib.
 ;; As there is no second-last function, we reverse the sequence and take the second value.
 
-(fn fibs [length-of-series]
+(fn fibs
+  [length-of-series]
   (loop [fib [1 1]]
     (if (< (count fib) length-of-series)
       (recur (conj fib (+ (second (reverse fib)) (last fib))))
       fib)))
 
 
-
-((fn fibs [length-of-series]
+((fn fibs
+   [length-of-series]
    (loop [fib [1 1]]
      (if (< (count fib) length-of-series)
        (recur (conj fib (+ (second (reverse fib)) (last fib))))
        fib)))
  8)
+
+
 ;; => [1 1 2 3 5 8 13 21]
 
 
 
 ;; Using recursion
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; reduce combines all the values of a collection using the given function.
 
 (reduce + [1 1 1 1])
+
+
 ;; => 4
 
 ;; reductions will return all the values (combinations) produced
 ;; in a reduce function
 
 (reductions + [1 1 1 1])
+
+
 ;; => (1 2 3 4)
 
 ;; lets look at some bigger answers
 
 (reduce * [1 2 3 4 5 6 7 8 9])
+
+
 ;; => 362880
 
 (reductions * [1 2 3 4 5 6 7 8 9])
+
+
 ;; => (1 2 6 24 120 720 5040 40320 362880)
 
 
 ;; reduce and reductions can both take a starting value
 
 (reduce conj [] '(1 2 3))
+
+
 ;; => [1 2 3]
 
 (reductions conj [] '(1 2 3))
+
+
 ;; => ([] [1] [1 2] [1 2 3])
 
 
@@ -170,29 +208,35 @@
 
 (fn [size-of-series]
   (map first (reductions
-              (fn [[primary secondary] _] [secondary (+ primary secondary)])
-                [1 1]
-                (range 1 size-of-series))))
+               (fn [[primary secondary] _] [secondary (+ primary secondary)])
+               [1 1]
+               (range 1 size-of-series))))
+
 
 (reductions
- (fn [[primary secondary] _] [secondary (+ primary secondary)])
- [1 1]
- (range 1 9))
+  (fn [[primary secondary] _] [secondary (+ primary secondary)])
+  [1 1]
+  (range 1 9))
+
+
 ;; => ([1 1] [1 2] [2 3] [3 5] [5 8] [8 13] [13 21] [21 34] [34 55])
 
 
 (map first '([1 1] [1 2] [2 3] [3 5] [5 8] [8 13] [13 21] [21 34] [34 55]))
+
+
 ;; => (1 1 2 3 5 8 13 21 34)
 
 
 ((fn [size-of-series]
    (map first (reductions
-                (fn
-                  [[primary secondary] _]
+                (fn [[primary secondary] _]
                   [secondary (+ primary secondary)])
                 [1 1]
                 (range 1 size-of-series))))
  8)
+
+
 ;; => (1 1 2 3 5 8 13 21)
 
 
@@ -202,15 +246,17 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; using loop recur - low level of abstraction
 
-(fn fibs [size-of-series]
+(fn fibs
+  [size-of-series]
   (loop [fib [1 1]]
     (if (< (count fib) size-of-series)
       (recur (conj fib (+ (second (reverse fib)) (last fib))))
       fib)))
+
 
 ;; Code Golf Score: 101
 
@@ -219,9 +265,10 @@
 
 (fn [size-of-series]
   (map first (reductions
-              (fn [[primary secondary] _] [secondary (+ primary secondary)])
-              [1 1]
-              (range 1 size-of-series))))
+               (fn [[primary secondary] _] [secondary (+ primary secondary)])
+               [1 1]
+               (range 1 size-of-series))))
+
 
 ;; similar to reductions
 #(take % (map first (iterate (fn [[a b]] [(+ a b) a]) [1 0])))
@@ -231,19 +278,15 @@
 
 (fn [i] (take i '(1 1 2 3 5 8 13 21)))
 
+
 ;; Obviously as soon as the requirements change to be a larger number than 8 for the fibonacci sequence, then this code is going to fail.
 
 
 
-
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Other solutions to fibonachi
 
-;;Programming in Clojure p. 136
+;; Programming in Clojure p. 136
 
 ;; (defn fibo [] (map first (iterate (fn [[a b]] [b (+ a b)]) [0 1])))
 
@@ -264,11 +307,15 @@
 
 ;; We can use iterate to generate pairs of [a b] and then take the first of each one.
 
-(defn fib-step [[a b]]
+(defn fib-step
+  [[a b]]
   [b (+ a b)])
 
-(defn fib-seq []
+
+(defn fib-seq
+  []
   (map first (iterate fib-step [0 1])))
+
 
 ;; (take 20 (fib-seq))
 
@@ -328,7 +375,7 @@
 ;;        x)))
 
 
-;;;;; Thrush operator
+;; Thrush operator
 
 ;; You can use the thrush operator to clean up #3 a bit (depending on who you ask; some people love this style, some hate it; I'm just pointing out it's an option):
 
@@ -349,7 +396,7 @@
 ;; ;;output (0 1 1 2 3 5 8 13 21 34)
 
 
-;;;;; Avoiding recursion ?
+;; Avoiding recursion ?
 
 ;; In Clojure it's actually advisable to avoid recursion and instead use the loop and recur special forms.
 ;; This turns what looks like a recursive process into an iterative one, avoiding stack overflows and
@@ -357,12 +404,14 @@
 
 ;; Here's an example of how you'd implement a Fibonacci sequence with this technique:
 
-(defn fib [n]
+(defn fib
+  [n]
   (loop [fib-nums [0 1]]
     (if (>= (count fib-nums) n)
       (subvec fib-nums 0 n)
       (let [[n1 n2] (reverse fib-nums)]
         (recur (conj fib-nums (+ n1 n2)))))))
+
 
 ;; The loop construct takes a series of bindings, which provide initial values, and one or more body forms.
 ;; In any of these body forms, a call to recur will cause the loop to be called recursively with the
@@ -370,11 +419,12 @@
 
 
 ;; Using a lazy sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; seems to hammer the computer when taking 100
 
-(defn fib-lazy []
+(defn fib-lazy
+  []
   (cons 0 (cons 1 (lazy-seq (map + (fib-lazy) (rest (fib-lazy)))))))
 
 

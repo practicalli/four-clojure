@@ -1,7 +1,8 @@
 (ns four-clojure.059-juxtaposition)
 
+
 ;; 059 - Juxtaposition
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Medium
 ;; Topics:	higher-order-functions core-functions
@@ -16,18 +17,24 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; There is a special restrictions on juxt
 ;; which means that juxt is probably the answer.
 
 (= [21 6 1] ((juxt + max min) 2 3 5 1 6 4))
+
+
 ;; => true
 
 (= ["HELLO" 5] ((juxt #(.toUpperCase %) count) "hello"))
+
+
 ;; => true
 
 (= [2 6 4] ((juxt :a :c :b) {:a 2, :b 4, :c 6, :d 8 :e 10}))
+
+
 ;; => true
 
 ;; Looking at the tests, what does juxt do?
@@ -39,7 +46,7 @@
 ;; The results of each function are not used by the other functions
 
 ;; Clojure docs - juxt
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; https://clojuredocs.org/clojure.core/juxt
 
 ;; Takes a set of functions and returns a fn that is the juxtaposition
@@ -53,14 +60,16 @@
 
 
 ;; juxtaposition - dictionary definition
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; the fact of two things being seen or placed close together with contrasting effect.
 
 
 ;; Other examples of juxt
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ((juxt first count) "Practicalli Clojure Rocks")
+
+
 ;; => [\P 25]
 
 (def separate
@@ -69,7 +78,10 @@
   remove will keep values that do not match, removes those that do match"
   (juxt filter remove))
 
+
 (separate pos? [-1 2 -5 10])
+
+
 ;; => [(2 10) (-1 -5)]
 
 ;; https://blog.klipse.tech/clojure/2017/04/22/clojure-juxt-some-reduced.html
@@ -78,7 +90,7 @@
 
 
 ;; source code for juxt function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L2568
 
 #_(defn juxt
@@ -120,22 +132,23 @@
          ([x y z & args] (reduce1 #(conj %1 (apply %2 x y z args)) [] fs))))))
 
 
-
-
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; using higher order functions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; return a function that reduces one or more functions over the same arguments (values)
 ;; and combines the results
 
 
 ;; In previous examples we have seen we can return a function as a result.
 
-(fn higher-order-function [arg]
-  (fn returned-function [value]
+(fn higher-order-function
+  [arg]
+  (fn returned-function
+    [value]
     (arg value)))
+
 
 ;; When we evaluate the higher order function with an argument,
 ;; then we get the returned function as the result
@@ -162,8 +175,7 @@
    (fn [x]
      (let [result1 (f x)
            result2 (g x)]
-       [result1 result2])))
-  )
+       [result1 result2]))))
 
 
 ;; using a let function creates local names that we can manage without.
@@ -181,8 +193,7 @@
   ;; evaluated when called with 2 functions
   ([f g]
    (fn [x]
-     [(f x) (g x)]))
-  )
+     [(f x) (g x)])))
 
 
 ;; we have a solution that should work with the second and third 4Clojure tests
@@ -210,9 +221,11 @@
      (fn [x]
        [(f x) (g x)])))
 
-  #(.toUpperCase % ) count)
+  #(.toUpperCase %) count)
 
  "hello")
+
+
 ;; => ["HELLO" 5]
 
 
@@ -236,6 +249,8 @@
 
  ;; values the functions will use
  {:a 2, :b 4, :c 6, :d 8 :e 10})
+
+
 ;; => [2 4 6]
 
 
@@ -247,6 +262,7 @@
 (fn [& args]
   ,,,)
 
+
 ;; args within the function definition is a collection of all the values passed
 ;; when calling the function.
 
@@ -254,7 +270,6 @@
 ;; we can use the apply function to enable our supplied functions work
 ;; with multiple values in the collection
 #_(apply f [1 2 3 4])
-
 
 
 ;; Refactor the above to work with multiple values,
@@ -277,6 +292,8 @@
      [(apply f xs)
       (apply g xs)
       (apply h xs)])))
+
+
 ;; => #'four-clojure.059-juxtaposition/juxt-with-multiple-values
 
 
@@ -302,6 +319,8 @@
   + max min)
 
  2 3 5 1 6 4)
+
+
 ;; => [21 6 1]
 
 
@@ -328,7 +347,7 @@
 
 
 ;; Refactor the answer
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The answer feels a bit too hard coded and its limited to three functions.
 ;; I am sure we can do something more elegant.
@@ -339,6 +358,7 @@
 
 (fn [& fs]
   ,,,)
+
 
 ;; What ever we pass to this function becomes a vector of those arguments
 
@@ -355,6 +375,7 @@
 
 (map (fn [f] (apply f [2 3 5 1 6 4])) [+ max min])
 
+
 ;; or using the function definition short form syntax
 
 (map #(apply % [2 3 5 1 6 4]) [+ max min])
@@ -364,6 +385,7 @@
 
 #_(fn [& values]
     (map #(apply % values) [+ max min]))
+
 
 ;; finally wrap that function to be returned in its own function,
 ;; so we can get the sequence of functions to be applied as arguments
@@ -378,7 +400,8 @@
 (fn juxt-with-multiple-function
   [& fs]
 
-  (fn return-function [& xs]
+  (fn return-function
+    [& xs]
     (map (fn [f] (apply f xs)) fs)))
 
 
@@ -388,12 +411,12 @@
     (map #(apply % xs) fs)))
 
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn [& fs]
   (fn [& xs]
     (map #(apply % xs) fs)))
+
 
 ;; golf score: 36

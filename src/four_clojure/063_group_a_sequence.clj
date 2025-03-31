@@ -1,7 +1,8 @@
 (ns four-clojure.063-group-a-sequence)
 
+
 ;; #063 Group a Sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	core-functions
@@ -17,7 +18,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (= (group-by #(> % 5) [1 3 6 8]) {false [1 3], true [6 8]})
 
@@ -34,7 +35,7 @@
 
 
 ;; Go to the source
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L7066
 
@@ -89,7 +90,7 @@
 
 
 ;; Starting from scratch
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; If we can create a map for each of the values, where the key for the value is the result of the calling the function on that value.
 
 ;; Using `let` we get a new local value that is the result of calling the function passed as an arguments
@@ -101,11 +102,13 @@
   (let [new-key (f value)]
     (hash-map new-key value)))
 
+
 ;; Or we can explicity put the values into a map using `{}`
 
 (fn [f value]
   (let [new-key (f value)]
     {new-key value}))
+
 
 ;; Now call our function definition with the arguments from test 1
 
@@ -113,27 +116,39 @@
    (let [new-key (f value)]
      {new-key value}))
  #(> % 5) 1)
+
+
 ;; => {false 1}
 
 
 ;; Iterating over the collection
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; we need to iterate over our collection
 ;; ideally we should use one of the `clojure.core` functions
 
 (map #(> % 5) [1 3 6 8])
+
+
 ;; => (false false true true)
 
 (filter #(> % 5) [1 3 6 8])
+
+
 ;; => (6 8)
 
 (remove #(> % 5) [1 3 6 8])
+
+
 ;; => (1 3)
 
 (keep #(> % 5) [1 3 6 8])
+
+
 ;; => (false false true true)
 
 (partition-by #(> % 5) [1 3 6 8])
+
+
 ;; => ((1 3) (6 8))
 
 ;; It doesnt seem there is anything that does exactly what we want
@@ -144,6 +159,7 @@
       incorrect-results (remove f value)]
   (hash-map false incorrect-results true correct-results))
 
+
 ;; define as a function so we can capture the arguments
 
 (fn [f value]
@@ -151,14 +167,16 @@
         incorrect-results (remove f value)]
     (hash-map false incorrect-results true correct-results)))
 
+
 ;; call the funciton with the first test values (this wont work for other tests, as its hard-coded to test the first)
 
-(
- (fn [f value]
+((fn [f value]
    (let [correct-results   (filter f value)
          incorrect-results (remove f value)]
      (hash-map false incorrect-results true correct-results)))
  #(> % 5) [1 3 6 8])
+
+
 ;; => {true (6 8), false (1 3)}
 
 
@@ -167,7 +185,7 @@
 
 
 ;; Ideas
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; idea
 ;; parition-by identity and then cons the results of passing the given function over partitioned data
 ;; cons the result of the function to the beginning of each partition.
@@ -181,7 +199,7 @@
 
 
 ;; `for` - list comprehension
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; f is the function passed as an argument
 ;; xs is the collection passed as an argument
 ;; x is the individual value pulled from the collection by `for`
@@ -189,11 +207,14 @@
 (fn [f xs]
   (for [x xs] {(f x) [x]}))
 
+
 ;; Call the function with the arguments from the first test
 
 ((fn [f xs]
    (for [x xs] {(f x) [x]}))
  #(> % 5) [1 3 6 8])
+
+
 ;; => ({false [1]} {false [3]} {true [6]} {true [8]})
 
 
@@ -205,23 +226,28 @@
 (fn [f xs]
   (apply merge-with into (for [x xs] {(f x) [x]})))
 
+
 ;; Call the function definition with arguments from the first 4Clojure testing
 ;; use debugging to see what is happening
 
 ((fn [f xs]
    (apply merge-with into (for [x xs] {(f x) [x]})))
  #(> % 5) [1 3 6 8])
+
+
 ;; => {false [1 3], true [6 8]}
 
 
 ((fn [f xs]
    (apply merge-with concat (for [x xs] {(f x) [x]})))
  #(> % 5) [1 3 6 8])
+
+
 ;; => {false (1 3), true (6 8)}
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; A nice
 (fn [f xs]
@@ -234,7 +260,6 @@
       (let [k (f x)]
         (assoc ret k (conj (get ret k []) x))))
     {} coll))
-
 
 
 ;; Interesting solutions
@@ -255,6 +280,7 @@
               concat acc {(f v) [v]}))
           {}
           xs))
+
 
 #(apply merge-with into
         (for [x %2]

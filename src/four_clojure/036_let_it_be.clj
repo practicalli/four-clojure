@@ -1,9 +1,8 @@
 (ns four-clojure.036-let-it-be)
 
 
+;; ---------------------------------------
 ;; #036 Let it Be
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; Difficulty:	Elementary
 ;; Topics:	math syntax
 
@@ -12,10 +11,11 @@
 ;; (= 10 (let __ (+ x y)))
 ;; (= 4 (let __ (+ y z)))
 ;; (= 1 (let __ z))
+;; ---------------------------------------
 
-
+;; ---------------------------------------
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Delving into let binding in a little more detail
 
@@ -25,10 +25,11 @@
 
 ;; https://github.com/jr0cket/four-clojure/blob/master/src/four_clojure/030_compress_a_sequence.clj#L137
 ;; https://github.com/jr0cket/four-clojure/blob/master/src/four_clojure/051_advanced_destructuring.clj
+;; ---------------------------------------
 
-
+;; ---------------------------------------
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; (= 10 (let __ (+ x y)))
 ;; (= 4 (let __ (+ y z)))
@@ -41,6 +42,8 @@
 (let [x 5
       y 5]
   (+ x y))
+
+
 ;; => 10
 
 ;; The last test shows that z has a specific value
@@ -48,12 +51,16 @@
 
 (let [z 1]
   z)
+
+
 ;; => 1
 
 ;; As we now know z, we can work out y with the second test
 (let [y 3
       z 1]
   (+ y z))
+
+
 ;; => 4
 
 ;; finally we know all three values.
@@ -61,8 +68,12 @@
 (let [x 7
       y 3]
   (+ x y))
-;; => 10
 
+
+;; => 10
+;; ---------------------------------------
+
+;; ---------------------------------------
 ;; So what do we use as the answer?
 
 ;; The bound values are valid even if they are not used
@@ -76,9 +87,12 @@
       z 1])
 
 
-;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ---------------------------------------
 
-[x 7
- y 3
- z 1]
+;; ---------------------------------------
+;; Answers summary
+
+;; [x 7
+;;  y 3
+;;  z 1]
+;; ---------------------------------------

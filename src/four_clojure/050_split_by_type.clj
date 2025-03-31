@@ -1,7 +1,8 @@
 (ns four-clojure.050-split-by-type)
 
+
 ;; #050 Split by Type
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Medium
 ;; Topics:	seqs
@@ -14,7 +15,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; As the problem states, so long as we return the groupings in order,
 ;; the order within each grouping is not important
@@ -22,7 +23,7 @@
 ;; All our test data has very specific types, so its unambiguous
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Clojure does not have a group function, but auto-complete suggested `group-by` which does what I was looking for.
 
@@ -30,6 +31,8 @@
 ;; We could group by identity, this simply returns a duplicate of all the values though
 
 (group-by identity [1 :a 2 :b 3 :c])
+
+
 ;; => {1 [1], :a [:a], 2 [2], :b [:b], 3 [3], :c [:c]}
 
 ;; The `class` and `type` functions return the underlying types used in Clojure.
@@ -38,16 +41,24 @@
 ;; infer them.
 
 (class "string")
+
+
 ;; => java.lang.String
 
 (type "string")
+
+
 ;; => java.lang.String
 
 (group-by type [1 :a 2 :b 3 :c])
+
+
 ;; => {java.lang.Long [1 2 3], clojure.lang.Keyword [:a :b :c]}
 
 
 (group-by class [1 :a 2 :b 3 :c])
+
+
 ;; => {java.lang.Long [1 2 3], clojure.lang.Keyword [:a :b :c]}
 
 
@@ -57,6 +68,8 @@
 ;; `vals` is a handy function that just returns the values, without the keys
 
 (vals {1 :a 2 :b 3 :c})
+
+
 ;; => (:a :b :c)
 
 
@@ -65,7 +78,7 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 #_
 (fn [data]
@@ -78,12 +91,14 @@
 
 
 ;; Interesting solutions from 4Clojure top 100
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (comp vals (partial group-by type))
 
+
 (comp (partial map second)
       (partial group-by class))
+
 
 ;; ->> typically used for sequence operations
 #(->> % (group-by type) (vals))

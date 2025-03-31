@@ -1,7 +1,8 @@
 (ns four-clojure.055-count-occurances)
 
+
 ;; #054 Count occurances
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Medium
 ;; Topics:	seqs core-functions
@@ -16,7 +17,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Define a function that takes a sequence as an argument and returns a map
 
@@ -26,12 +27,14 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; In the previous challenge we tried `group-by` but it didn't help.  It does help in this challenge though.
 
 (group-by identity [1 1 2 3 2 1 1])
+
+
 ;; => {1 [1 1 1 1], 2 [2 2], 3 [3]}
 
 
@@ -54,10 +57,12 @@
 
 {:k "v" ,,,,}
 
+
 (reduce
   (fn [xs [k v]]
     (assoc xs k (count v)))
   {} (group-by identity [1 1 2 3 2 1 1]))
+
 
 ;; Put this into a function that takes a sequence as an argument
 
@@ -88,7 +93,6 @@
           (group-by identity xs))))
 
 
-
 ((fn [xs]
    (into {}
          (map (fn [[k v]] {k (count v)}) (group-by identity xs))))
@@ -96,7 +100,7 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; into and map
 
@@ -105,7 +109,6 @@
         (map
           (fn [[k v]] {k (count v)})
           (group-by identity xs))))
-
 
 
 ;; assoc and reduce

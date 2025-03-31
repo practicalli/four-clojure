@@ -1,7 +1,8 @@
 (ns four-clojure.044-rotate-sequence)
 
+
 ;; #044 Rotate sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; http://www.4clojure.com/problem/44
 
 ;; Difficulty:	Medium
@@ -17,7 +18,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; We need to write a function that takes two arguments
 ;; - the number of elements we need to rotate
@@ -32,12 +33,12 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 
 ;; Going loopy...
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Iterate through the collection with loop recur
 
@@ -47,8 +48,8 @@
          elements-rotating []]
     (if (> 1 rotate-count)
       elements
-      (recur (dec rotate-count)
-             ))))
+      (recur (dec rotate-count)))))
+
 
 ;; hmm, this is a bit of a challenge, as we have both negative and positive numbers, so we cant just decrement the value.
 
@@ -57,9 +58,11 @@
 
 
 ;; `take` function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (take 2 [1 2 3 4 5])
+
+
 ;; => (1 2)
 
 
@@ -67,11 +70,14 @@
 ;; Returns a lazy sequence of all but the first n items in coll.
 
 (drop 2 [1 2 3 4 5])
+
+
 ;; => (3 4 5)
 
 ;; If we concatinate these results, then we get the answer we were looking
 
 (concat [3 4 5] [1 2])
+
 
 ;; so lets write a function to test this approach
 ;; drop, take, concatenate
@@ -85,6 +91,8 @@
 ((fn [rotate-by collection]
    (concat (drop rotate-by collection) (take rotate-by collection)))
  2 [1 2 3 4 5])
+
+
 ;; => (3 4 5 1 2)
 
 
@@ -93,14 +101,20 @@
 
 ((fn [rotate-by collection]
    (concat (drop rotate-by collection) (take rotate-by collection)))
- -2 [4 5 1 2 3 ])
+ -2 [4 5 1 2 3])
+
+
 ;; => (4 5 1 2 3)
 
 (take -2 [1 2 3 4 5])
+
+
 ;; => ()
 
 
 (drop -2 [4 5 1 2 3])
+
+
 ;; => (4 5 1 2 3)
 
 ;; No, so we will need to take another approach
@@ -108,24 +122,32 @@
 
 
 ;; Lets try some mathematics
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; lets add the size of the collection to the rotation number
 ;; in the first 4Clojure test
 (+ 2 5)
+
+
 ;; => 7
 
 ;; from the second test
 (+ -2 5)
+
+
 ;; => 3
 
 ;; `mod` will also allow us to "subtract" the rotatiion from the collection size
 ;; but we always get a number within the size of the collection
 
 (mod 2 5)
+
+
 ;; => 2
 
 (mod -2 5)
+
+
 ;; => 3
 
 ;; so we can use mod to find the right values for `take` and `drop`
@@ -133,7 +155,7 @@
 
 
 ;; `cycle` - not just for peddling
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The concept of `mod` cycling reminded me of the cycle function.
 
@@ -146,6 +168,7 @@
 
 (cycle [1 2 3 4 5])
 
+
 ;; 1 2 3 4 5 1 2 3 4 5
 ;; . . s       e
 
@@ -155,9 +178,13 @@
 
 
 (take 2 (cycle [1 2 3 4 5]))
+
+
 ;; => (1 2)
 
 (drop 2 (cycle [1 2 3 4 5]))
+
+
 ;; infinite list!
 
 ;; hmm, not particularly useful
@@ -175,9 +202,11 @@
       (take (+ (mod 2 (count [1 2 3 4 5])) (count [1 2 3 4 5]))
             (cycle [1 2 3 4 5])))
 
+
 (drop 2
       (take (+ (mod 2 5) 5)
             (cycle [1 2 3 4 5])))
+
 
 (drop 2
       (take (+ 2 5)
@@ -208,6 +237,8 @@
      (drop distance
            (take (+ distance size) (cycle collection)))))
  2 [1 2 3 4 5])
+
+
 ;; => (3 4 5 1 2)
 
 ;; NOTE: when debugging an expression with a lazy fuction,
@@ -216,7 +247,7 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn [rotate-by collection]
   (let [size     (count collection)

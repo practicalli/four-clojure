@@ -1,7 +1,8 @@
 (ns four-clojure.173-intro-to-destructuring-part2)
 
+
 ;; # 173 Intro to destructuring - part 2
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; http://www.4clojure.com/problem/173
 
 ;; Difficulty:	Easy
@@ -17,7 +18,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; We need to get a function and a collection from the collection in each `let` binding.
 ;; Each collection has the function first, followed by the the collection the function will take as an argument
@@ -38,6 +39,8 @@
 (let [[person1 & remaining-people] names]
   (str "The first person in the queue is: " person1
        ".  The rest of the people queing are: " (apply str remaining-people)))
+
+
 ;; => "The first person in the queue is: Michael.  The rest of the people queing are: AmberAaronNickEarlJoe"
 
 
@@ -45,15 +48,21 @@
 ;; it creates a string of the collection, rather than of the elements in the collection.
 
 (str ["Michael" "Amber" "Aaron" "Nick" "Earl" "Joe"])
+
+
 ;; => "[\"Michael\" \"Amber\" \"Aaron\" \"Nick\" \"Earl\" \"Joe\"]"
 
 ;; using `apply` with `str` will create a string made from each element of the collection
 
 (apply str ["Michael" "Amber" "Aaron" "Nick" "Earl" "Joe"])
+
+
 ;; => "MichaelAmberAaronNickEarlJoe"
 
 ;; we can use `interpose` to put a space in between each name before we join then as a single string.
 (apply str (interpose " " names))
+
+
 ;; => "Michael Amber Aaron Nick Earl Joe"
 
 
@@ -63,6 +72,8 @@
   (str "The first person in the queue is: " person1
        ".  The rest of the people queing are: "
        (apply str (interpose ", " remaining-people))))
+
+
 ;; => "The first person in the queue is: Michael.  The rest of the people queing are: Amber, Aaron, Nick, Earl, Joe"
 
 
@@ -72,14 +83,17 @@
 
 (def numbers [1 2 3 4 5])
 
+
 (let [[x _ z & remaining :as all] numbers]
   (apply str (interpose " " [x z remaining all])))
+
+
 ;; => "1 3 (4 5) [1 2 3 4 5]"
 
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Here are the tests we need to pass to solve the challenge
 
@@ -93,18 +107,26 @@
 ;; `range` generates a sequential collection of integer numbers,
 ;; up to but not including the specified number,
 (range 3)
+
+
 ;; => (0 1 2)
 
 ;; `range` will also take a starting point
 (range 5 11)
+
+
 ;; => (5 6 7 8 9 10)
 
 ;; `range` also takes a step, allowing you to be more selective about the sequence of numbers.
 (range 1 30 5)
+
+
 ;; => (1 6 11 16 21 26)
 
 ;; using `apply` with the `+` function adds together all the numbers in the collection.
 (apply + (range 3))
+
+
 ;; => 3
 
 
@@ -114,6 +136,8 @@
 
 (let [[function collection] [+ (range 3)]]
   (apply function collection))
+
+
 ;; => 3
 
 ;; so the 4Clojure answer is simply the two names
@@ -123,7 +147,7 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; we just need two names to bind the values that represent the function that
 ;; will be appli and the collection
@@ -134,10 +158,8 @@
 
 
 
-
-
 ;; Associative deconstruction
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Associative destructuring is used with map data structures (hash-map)
 ;; We can use the key names to automatically create matching local names
@@ -145,23 +167,31 @@
 
 ;; Lets define a client that we our company does business with.
 
-(def client {:name        "Super Co."
-             :location    "Philadelphia"
-             :description "The worldwide leader in plastic tableware."})
+(def client
+  {:name        "Super Co."
+   :location    "Philadelphia"
+   :description "The worldwide leader in plastic tableware."})
+
 
 ;; we can use the `get` function to get a value from a map using a key.
 
 (get client :name)
+
+
 ;; => "Super Co."
 
 ;; there is a shorter form of this, assuming the key is a keyword
 
 (:name client)
+
+
 ;; => "Super Co."
 
 ;; and you can also use the map as a function with any kind of key
 
 (client :name)
+
+
 ;; => "Super Co."
 
 
@@ -171,6 +201,8 @@
       location    (:location client)
       description (:description client)]
   (str name location "-" description))
+
+
 ;; => "Super Co.Philadelphia-The worldwide leader in plastic tableware."
 
 ;; we can simplify by using a map pattern
@@ -178,6 +210,8 @@
        name        :name
        description :description} client]
   (str name location "-" description))
+
+
 ;; => "Super Co.Philadelphia-The worldwide leader in plastic tableware."
 
 ;; using the keys keyword allows us to specify which keywords we want from the map,
@@ -185,4 +219,6 @@
 
 (let [{:keys [name location description]} client]
   (str name location "-" description))
+
+
 ;; => "Super Co.Philadelphia-The worldwide leader in plastic tableware."

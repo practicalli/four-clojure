@@ -1,7 +1,8 @@
 (ns four-clojure.47-contain-yourself)
 
+
 ;; #047 Contain Yourself
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:
@@ -15,7 +16,7 @@
 ;; (not (contains? [1 2 4] __))
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The aim of this challenge is to help you become familiar with the `contains?` function.
 ;; As the description of this challenge states, most people get confused by the name
@@ -36,23 +37,27 @@
 
 
 ;; Alternative - `some`
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; The `some` function is covered in 4Clojure challenge #48
 ;; http://www.4clojure.com/problem/48
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Sets work as expected with the `contains?` function
 ;; as the keys in a set are actually the values
 
 ;; If the value is not in the set, then return false
 (contains? #{4 5 6} 1)
+
+
 ;; => false
 
 ;; If the value is in the set, then return true
 (contains? #{4 5 6} 4)
+
+
 ;; => true
 
 ;; Vectors trip developers up
@@ -60,11 +65,15 @@
 
 ;; The value 1 gives the right result
 (contains? [1 1 1 1 1] 1)
+
+
 ;; => true
 
 ;; but so does two, because there is a value at index 2,
 ;; it does not matter what the value is at index 2, so long as there is a value
 (contains? [1 1 1 1 1] 2)
+
+
 ;; => true
 
 ;; As an index is separate from the contents of the collection,
@@ -73,11 +82,15 @@
 ;; Although the value 5 is in the collection,
 ;; there is no corresponding key as the index starts at zero.
 (contains? [1 2 3 4 5] 5)
+
+
 ;; => false
 
 ;; to add to the confusion we can make it look like its working,
 ;; if the index is the same as the values then we get true
 (contains? [0 1 2 3 4 0] 5)
+
+
 ;; => true
 
 
@@ -86,19 +99,25 @@
 
 ;; So if I key is in the collection, then its true.
 (contains? {4 :a 2 :b} 4)
+
+
 ;; => true
 
 
 ;; The not function inverts the boolean result,
 ;; so although contains? gives false, the not function turns that to true.
 (not (contains? [1 2 4] 4))
+
+
 ;; => true
 
 (not false)
+
+
 ;; => true
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 4

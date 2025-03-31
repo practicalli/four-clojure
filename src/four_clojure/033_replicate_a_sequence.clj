@@ -1,7 +1,8 @@
 (ns four-clojure.033-replicate-a-sequence)
 
+
 ;; #033 Replicate a Sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs
@@ -15,25 +16,28 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;
 
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; `repeat` will create a given number of a value or a collection
 
 (repeat 4 [1 2 3])
 
 (repeat 2 [1 2 3])
+
+
 ;; => ([1 2 3] [1 2 3])
 
 ;; and when we have the right number of collections,
 ;; we can interleave those collections to get the right result.
 
 (interleave [1 2 3] [1 2 3])
+
+
 ;; => (1 1 2 2 3 3)
 
 
@@ -42,12 +46,17 @@
 
 (interleave (repeat 2 [1 2 3]))
 
+
 ;; Using apply or reduce will make the evaluation eager.
 
 (apply interleave (repeat 2 [1 2 3]))
+
+
 ;; => (1 1 2 2 3 3)
 
 (reduce interleave (repeat 2 [1 2 3]))
+
+
 ;; => (1 1 2 2 3 3)
 
 
@@ -56,24 +65,32 @@
 (fn [coll reps]
   (apply interleave (repeat reps coll)))
 
+
 ((fn [coll reps]
    (apply interleave (repeat reps coll)))
  [1 2 3] 2)
+
+
 ;; => (1 1 2 2 3 3)
 
 ((fn [coll reps]
    (apply interleave (repeat reps coll)))
  [:a :b] 4)
+
+
 ;; => (:a :a :a :a :b :b :b :b)
 
 
 ((fn [coll reps]
    (apply interleave (repeat reps coll)))
  [4 5 6] 1)
+
+
 ;; => (4 5 6)
 
 
 #(apply interleave (repeat %2 %1))
+
 
 ;; this works for the first two tests
 
@@ -83,6 +100,8 @@
 ((fn [coll reps]
    (apply interleave (repeat reps coll)))
  [[1 2] [3 4]] 2)
+
+
 ;; => ([1 2] [1 2] [3 4] [3 4])
 
 
@@ -99,8 +118,9 @@
      coll
      (apply interleave (repeat reps coll))))
  [4 5 6] 1)
-;; => [4 5 6]
 
+
+;; => [4 5 6]
 
 
 
@@ -112,6 +132,8 @@
 ;; Actually `concat` by itself gives a partial answer.
 
 (concat [1 2 3] [1 2 3])
+
+
 ;; => (1 2 3 1 2 3)
 
 
@@ -119,6 +141,8 @@
 
 
 (mapcat (partial repeat 2) [1 2 3])
+
+
 ;; => (1 1 2 2 3 3)
 
 ;; turning this into a 4Clojure answer
@@ -130,14 +154,16 @@
 ((fn [s n]
    (mapcat (partial repeat n) s))
  [4 5 6] 1)
+
+
 ;; => (4 5 6)
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 (fn [s n]
   (mapcat (partial repeat n) s))
 
 
-#(mapcat (partial repeat %2 ) %)
+#(mapcat (partial repeat %2) %)

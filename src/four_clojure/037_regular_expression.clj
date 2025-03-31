@@ -1,7 +1,8 @@
 (ns four-clojure.037-regular-expression)
 
+
 ;; #037 Regular Expressions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Elementary
 ;; Topics:	regex syntax
@@ -12,7 +13,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; The easiest way to solve this problem is to evaluate the right hand side and get the result.
 
@@ -21,24 +22,30 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; lets find out the answer by evaluating the right hand side
 
 (apply str (re-seq #"[A-Z]+" "bA1B3Ce "))
+
+
 ;; => "ABC"
 
 (= "ABC" (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
 
 (re-seq #"[A-Z]+" "bA1B3Ce ")
+
+
 ;; => ("A" "B" "C")
 
 (reduce str '("A" "B" "C"))
+
+
 ;; => "ABC"
 
 
 ;; Regular Expressions (regex) - overview
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Writing regular expressions is like asking the question:
 ;; "Does a group of characters match a specific pattern?"
@@ -50,19 +57,26 @@
 
 #"cat"
 
+
 ;; We can check this is correct by looking at the type
 
 (type #"cat")
+
+
 ;; => java.util.regex.Pattern
 
 
 (re-find #"cat"  "I like cats")
 
 (re-find #"cat"  "I like to concatonate")
+
+
 ;; => "cat"
 
 
 (re-find #"cat"  "I like dogs instead")
+
+
 ;; => nil
 
 ;; Several Clojure functions take a regular expression pattern and a string,
@@ -79,7 +93,7 @@
 
 
 ;; What are regular expressions used for
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Validating information
 ;; - phone numbers
@@ -95,7 +109,7 @@
 
 
 ;; General Tools
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; https://regexr.com/
 ;; https://regex101.com/
@@ -103,7 +117,7 @@
 
 
 ;; Functions used with regular expressions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; clojure.string/
 ;; split
@@ -138,7 +152,7 @@
 
 
 ;; Checking phone numbers
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; Assume we have a website that takes international orders for businesses
@@ -154,12 +168,14 @@
 (def phone-two-gaps "020 123 1234")
 (def phone-two-dash "020-123-1234")
 
+
 ;; And lets have a non-London number
 
 (def not-london "0178 1231234")
 
+
 ;; Literal matches
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Using the specific numbers for the London region, we can easily do a check.
 
@@ -169,11 +185,15 @@
 
 
 (re-find #"020" not-london)
+
+
 ;; => nil
 
 
 (map #(re-find #"020" %)
      [phone-no-gaps phone-one-gap phone-two-gaps phone-two-dash])
+
+
 ;; => ("020" "020" "020" "020")
 
 
@@ -182,16 +202,22 @@
 
 
 (map #(re-find #"020" %) all-london-number-formats)
+
+
 ;; => ("020" "020" "020" "020")
 
 (count
-  (map #(re-find #"020" %) all-london-number-formats) )
+  (map #(re-find #"020" %) all-london-number-formats))
+
+
 ;; => 4
 
 (= 4
    (count
-     (filter  ,,, )
-     (map #(re-find #"020" %) all-london-number-formats) )  )
+     (filter  ,,,)
+     (map #(re-find #"020" %) all-london-number-formats)))
+
+
 ;; => true
 
 
@@ -199,6 +225,8 @@
 
 
 (map #(re-find #"020" %) all-numbers)
+
+
 ;; => ("020" "020" "020" "020" nil)
 
 
@@ -207,9 +235,12 @@
 
 
 (clojure.string/split "020 123    1234" #"\s+")
+
+
 ;; => ["020" "123" "1234"]
 
 #" "
+
 
 ;; Alternatively, if we know the position of the characters in the string,
 ;; we can use `subs` to extract start and end points
@@ -222,6 +253,8 @@
 ;; at end (defaults to length of string), exclusive.
 
 (subs "0201231234" 0 3)
+
+
 ;; => "020"
 
 
@@ -229,25 +262,32 @@
 ;; for example there could be spaces at the start
 
 (subs "    0201231234" 0 3)
+
+
 ;; => "   "
 
 (count [1 nil 3])
+
+
 ;; => 3
 
 
 
-
 ;; Getting just part of a string
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; If you just want an initial of the first word
 (re-find #"\w" "Jenny Jetpack")
+
+
 ;; => "J"
 
 
 ;; If you want the start of someones name, say the first three letters of the first word.
 
 (re-find #"\w\w\w" "Jenny Jetpack")
+
+
 ;; => "Jen"
 
 
@@ -255,6 +295,8 @@
 ;; numbers are not words in regex
 
 (re-find #"\w\w\w" "1 2 3 Jenny Jetpack")
+
+
 ;; => "Jen"
 
 
@@ -262,25 +304,35 @@
 
 
 (re-find #"\d" "1 2 3 Jenny Jetpack")
+
+
 ;; => "1"
 
 
 (re-find #"\d\d\d" "123 Jenny Jetpack")
+
+
 ;; => "123"
 
 
 ;; Matching several patterns - using OR
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (re-find #"cat|kitten" "Sometimes a cat is called pussycat")
+
+
 ;; => "cat"
 
 
 (re-find #"cat|kitten" "My kitten has grown up into a big cat")
+
+
 ;; => "kitten"
 
 
 (re-find #"cat|kitten" "A young cat is called a kitten")
+
+
 ;; => "cat"
 
 
@@ -288,20 +340,26 @@
 
 
 (re-seq #"cat|kitten" "Sometimes a cat is called pussycat")
+
+
 ;; => ("cat" "cat")
 
 
 (re-seq #"cat|kitten" "My kitten has grown up into a big cat")
+
+
 ;; => ("kitten" "cat")
 
 
 (re-seq #"cat|kitten" "A young cat is called a kitten")
+
+
 ;; => ("cat" "kitten")
 
 
 
 ;; Checking login / registration forms text
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; Define a function to check for multiple login names
@@ -312,10 +370,15 @@
     true
     false))
 
+
 (validate-user "jenny")
+
+
 ;; => true
 
 (validate-user "brian")
+
+
 ;; => false
 
 
@@ -325,34 +388,46 @@
     true
     false))
 
+
 (validate-similar-usernames "je")
+
+
 ;; => false
 
 (validate-similar-usernames "jen")
+
+
 ;; => true
 
 (validate-similar-usernames "jenn")
+
+
 ;; => true
 
 (validate-similar-usernames "jenny")
+
+
 ;; => true
 
 (validate-similar-usernames "jennifer")
-;; => true
 
+
+;; => true
 
 
 
 ;; Matching all characters of the alphabet
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; It is inefficient to define a literate pattern for the alphabet
 
 #"a|b|c|d|e|f|g|h|i|j|k|l|m|n|n|o|p|q|r|s|t|u|v|w|x|y|z"
 
+
 ;; Instead, you can use a range of characters
 
 #"[a-z]"
+
 
 ;; [ ] defines a character set
 ;; a is the start of the range
@@ -366,11 +441,14 @@
     true
     false))
 
+
 (match-any-word "Hello regex")
 
 (match-any-word "djoieriueriueo")
 
 (match-any-word "HELLO")
+
+
 ;; => false
 
 
@@ -381,18 +459,20 @@
     false))
 
 
-
 (defn match-word-partial-alphabet
   [word]
   (if (re-find #"[a-c]" word)
     true
     false))
 
+
 (match-word-partial-alphabet "alphabet")
 
 (match-word-partial-alphabet "cat")
 
 (match-word-partial-alphabet "dog")
+
+
 ;; => false
 
 
@@ -400,6 +480,7 @@
 (defn only-vowels
   [word]
   (re-seq #"a|e" word))
+
 
 (only-vowels "alphabet")
 
@@ -409,11 +490,13 @@
 
 
 ;; Matching multiple times
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Using the + we can look for the previous character multiple times
 
 (re-seq #"a+" "aardvark")
+
+
 ;; => ("aa" "a")
 
 
@@ -428,6 +511,7 @@
 
 (re-seq #"a+" "Aardvark")
 
+
 ;; we can be literal and use A, B, C
 ;; or we can use a range as before
 
@@ -440,13 +524,14 @@
 
 ;; Use match multiple times with a range
 (re-seq #"[a-mA-M]+" "Aardvark")
+
+
 ;; => ("Aa" "d" "a" "k")
 
 
 
-
 ;; Matching spaces
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 #"\s"
 
@@ -456,10 +541,14 @@
 
 
 (re-matches #"\w+\s\w+" "Jenny Jetpack")
+
+
 ;; => "Jenny Jetpack"
 
 
 (re-matches #"(\w+)\s(\w+)" "Jenny Jetpack")
+
+
 ;; => ["Jenny Jetpack" "Jenny" "Jetpack"]
 
 
@@ -467,31 +556,29 @@
 ;; so we only use the two words
 
 (let [[_ first-name last-name] (re-matches #"(\w+)\s(\w+)" "Jenny Jetpack")]
-  (if first-name ;; successful match
+  (if first-name ; successful match
     (str "First name: " first-name " , Last name: " last-name)
     (str "Unparsable name")))
+
+
 ;; => "First name: Jenny , Last name: Jetpack"
 
 
 (clojure.string/split  "Jenny Jetpack" #" ")
+
+
 ;; => ["Jenny" "Jetpack"]
 
 
 
-
-
 ;; Matching numbers
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 #"[0-9]"
 
 
-
-
-
-
 ;; Other Examples
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; Find all the links inside a web page
@@ -502,6 +589,5 @@
        (re-seq #"(?sm)href=\"([a-zA-Z.:/]+)\"" str_response)))
 
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;

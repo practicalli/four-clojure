@@ -1,7 +1,8 @@
 (ns four-clojure.068-recuring-theme)
 
+
 ;; 068: Recurring Theme
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Elementary
 ;; Topics:	recursion
@@ -17,13 +18,13 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; An opportunity to experiment with loop and recur
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 (loop [x      5
@@ -31,6 +32,7 @@
   (if (> x 0)
     (recur (dec x) (conj result (+ 2 x)))
     result))
+
 
 ;; => [7 6 5 4 3]
 
@@ -45,6 +47,6 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 [7 6 5 4 3]

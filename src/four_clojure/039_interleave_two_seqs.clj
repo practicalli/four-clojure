@@ -1,7 +1,8 @@
 (ns four-clojure.039-interleave-two-seqs)
 
+
 ;; #039 Interleave two seqs
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs core-functions
@@ -17,7 +18,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Write a function that takes two seqs as arguments
 
@@ -26,7 +27,7 @@
 ;; We cant use interleave, so its an opportunity to see how that function works.
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; What is a seq?
 
@@ -36,6 +37,8 @@
 ;; 1 2 3 4 5
 
 '(1 2 3 4 5)
+
+
 ;; as a linked list
 
 ;; 6 -> 1 -> 2 -> 3 -> 4 -> 5
@@ -52,32 +55,39 @@
 
 [:a :b :c]
 
+
 (take 10
       (range))
+
+
 ;; => (0 1 2 3 4 5 6 7 8 9)
 
 
 ;; Interleave
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; This gives the correct answer, but we cannot use it for our solution
 
 (interleave  [1 2 3]
              [:a :b :c])
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
 
 ;; loop - recur
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; You can do pretty much anything with loop recur...
 ;; but it can be a lot of work...
 
 
 ;; The `map` function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; `map` - Iterating through two (or more) sequences
 
 (map + [1 2 3] [4 5 6 7])
+
+
 ;; => (5 7 9)
 
 ;; form of map
@@ -89,12 +99,16 @@
   (fn [seq1 seq2] [seq1 seq2])
   [1 2 3]
   [:a :b :c])
+
+
 ;; => ([1 :a] [2 :b] [3 :c])
 
 (map
   (fn [seq1 seq2] seq1 seq2)
   [1 2 3]
   [:a :b :c])
+
+
 ;; => (:a :b :c)
 
 
@@ -107,6 +121,8 @@
 ;; concat - concatenation of the elements in supplied colls (returns lazy seq).
 
 (concat [1 :a] [2 :b] [3 :c])
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
@@ -118,6 +134,8 @@
     (fn [seq1 seq2] [seq1 seq2])
     [1 2 3]
     [:a :b :c]))
+
+
 ;; => ([1 :a] [2 :b] [3 :c])
 
 
@@ -130,18 +148,26 @@
 
 (map concat
      '([1 :a] [2 :b] [3 :c]))
+
+
 ;; => ((1 :a) (2 :b) (3 :c))
 
 
 (reduce concat '([1 :a] [2 :b] [3 :c]))
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
 (apply concat '([1 :a] [2 :b] [3 :c]))
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
 #_(mapcat [] '([1 :a] [2 :b] [3 :c]))
+
+
 ;; java.lang.IllegalArgumentException
 ;; Key must be integer
 
@@ -154,6 +180,8 @@
     (fn [seq1 seq2] [seq1 seq2])
     [1 2 3]
     [:a :b :c]))
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
@@ -172,6 +200,8 @@
   (fn [seq1 seq2] [seq1 seq2])
   [1 2 3]
   [:a :b :c])
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
@@ -182,20 +212,26 @@
 
 
 (vector 1 2)
+
+
 ;; => [1 2]
 
 
 (vector [1 2] [3 4])
+
+
 ;; => [[1 2] [3 4]]
 
 
 
 (mapcat vector [1 2 3] [:a :b :c])
+
+
 ;; => (1 :a 2 :b 3 :c)
 
 
 ;; References
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Clojure collections - Purelyfunctional.tv
 ;; https://purelyfunctional.tv/guide/clojure-collections/
 
@@ -207,6 +243,6 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 mapcat vec

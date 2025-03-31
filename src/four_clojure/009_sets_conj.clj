@@ -1,7 +1,8 @@
 (ns four-clojure.009-sets-conj)
 
+
 ;; #9 Sets: conj
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Elementary
 ;; Topics:
@@ -12,12 +13,12 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; A simple challenge to show how `conj` works with sets.
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; As discussed in challenge #8, sets do not really care about order
 ;; it is only the values within the set that is important
@@ -26,14 +27,17 @@
 ;; then we just need to conjoin the missing number
 
 (conj #{1 4 3} 2)
+
+
 ;; => #{1 4 3 2}
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Most readable answer
 2
+
 
 ;; Superfluous answers
 

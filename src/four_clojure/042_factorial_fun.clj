@@ -1,7 +1,8 @@
 (ns four-clojure.042-factorial-fun)
 
+
 ;; #042 Factorial Fun
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	math
@@ -14,7 +15,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; factorials
 ;; the product of an integer and all the integers below it; e.g. factorial four ( 4! ) is equal to 24.
@@ -67,7 +68,7 @@
 ;; Then multiply all the numbers together
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; lets take a low level procedural approach with loop and recur
 
@@ -79,6 +80,7 @@
       (recur
         (dec current-number)
         (* total current-number)))))
+
 
 ;; Test this function with an argument
 ;; 5! should give 120 as a result
@@ -93,9 +95,8 @@
  5)
 
 
-
 ;; Use some nicer abstractions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; `range` will generate an incremental set of numbers
@@ -105,47 +106,55 @@
 (range 1 (inc 10))
 
 
-(fn progression [number]
+(fn progression
+  [number]
   (range 1 (inc number)))
 
-((fn progression [number]
+
+((fn progression
+   [number]
    (range 1 (inc number)))
  5)
+
+
 ;; => (1 2 3 4 5)
 
 
-(fn factorial [number]
+(fn factorial
+  [number]
   (reduce
     *
     (range 1 (inc number))))
 
 
-((fn factorial [number]
+((fn factorial
+   [number]
    (reduce
      *
      (range 1 (inc number))))
  5)
 
 
-
-
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
-(fn factorial [number]
+(fn factorial
+  [number]
   (reduce
     *
     (range 1 (inc number))))
+
 
 ;; or the golf score minimised code
 
 #(reduce * (range 1 (inc %)))
 
+
 ;; Code Golf Score: 24
 
 ;; or
 #(apply * (range 1 (inc %)))
+
 
 ;; Code Golf Score: 23
 
@@ -163,7 +172,7 @@
 
 
 ;; other 4Clojure solutions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Using iterate to create a progression from the number backwards
 ;; adding a condition via the `take-while` its a positive number
@@ -178,6 +187,7 @@
       (take %)
       (reduce *))
 
+
 ;; in the full function definition syntax
 
 (fn factorial
@@ -188,7 +198,7 @@
 
 
 ;; Factorial fun facts
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Six weeks is exactly 10! seconds (=3,628,800)
 
@@ -201,8 +211,8 @@
    60 #_minutes
    24 #_hours
    7  #_days
-   6  #_weeks
-   )
+   6  #_weeks)
+
 
 ;; 60 is also (* 2 3 10) or (* 3 4 5)
 ;; 24 is also (* 8 3)
@@ -213,13 +223,14 @@
    (* 3 4 5)  #_minutes
    (* 8 3)    #_hours
    7  #_days
-   6  #_weeks
-   )
+   6  #_weeks)
+
 
 ;; sort the values in increasing numeric order
 ;; its mostly a progression for 10!
 
 (* 2 3 4 5 6 7 8 3 3 10)
+
 
 ;; we have several 3 values, so we could combine
 ;; (* 3 3) equals 9

@@ -1,7 +1,8 @@
 (ns four-clojure.046-flipping-out)
 
+
 ;; #46 - Flipping out
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; http://www.4clojure.com/problem/46
 
 ;; Difficulty:	Medium
@@ -18,7 +19,7 @@
 ;; A lesson in calling funcitons and defining functions
 
 ;; Clojure syntax - functions that return functions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; How to write a function that returns a function
 
 
@@ -46,7 +47,7 @@
 ;; Now we know how to write a function that returns a function
 
 ;; deconstructing the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; We need to define a function that takes one argument,
 ;; and returns a function definition
@@ -54,12 +55,14 @@
 (fn [function]
   (fn []))
 
+
 ;; our return function should do something with the argument it received
 ;; as the argument is a function we want to call, then we should put it in a list
 
 (fn [function]
   (fn []
     (function)))
+
 
 ;; we are not finished yet, but if we use data from the first test,
 ;; and called out function, then we would get:
@@ -75,6 +78,7 @@
   (fn [arg1 arg2]
     (function arg2 arg1)))
 
+
 ;; We are almost there.
 
 ;; The function we return needs to swap around the arguments
@@ -85,9 +89,13 @@
 ;; changing our function signature to (fn [& args])
 
 (reverse [:arg1 :arg2])
+
+
 ;; => (:arg2 :arg1)
 
 (reverse [2 [1 2 3 4 5]])
+
+
 ;; => ([1 2 3 4 5] 2)
 
 ;; This adds more complexity to our code and we would have to apply our function
@@ -101,11 +109,12 @@
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn [function]
   (fn [arg1 arg2]
     (function arg2 arg1)))
+
 
 ;; Lowest golf score
 (fn [f] #(f %2 %1))

@@ -1,7 +1,8 @@
 (ns four-clojure.058-function-composition)
 
+
 ;; #058 function composition
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Medium
 ;; Topics:	higher-order-functions core-functions
@@ -16,7 +17,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; This challenge helps you understand functional composition,
 ;; an important aspect of learning how to write Clojure elegantly.
@@ -25,15 +26,23 @@
 ;; as it would just be the answer
 
 (= [3 2 1] ((comp rest reverse) [1 2 3 4]))
+
+
 ;; => true
 
 (= 5 ((comp (partial + 3) second) [1 2 3 4]))
+
+
 ;; => true
 
 (= true ((comp zero? #(mod % 8) +) 3 5 7 9))
+
+
 ;; => true
 
 (= "HELLO" ((comp #(.toUpperCase %) #(apply str %) take) 5 "hello world"))
+
+
 ;; => true
 
 ;; In 4Clojure #20 we also solve with comp:
@@ -45,9 +54,12 @@
 
 (comp second reverse)
 
+
 ;; Using the first 4Clojure test we would have
 
 ((comp second reverse) (list 1 2 3 4 5))
+
+
 ;; => 4
 
 
@@ -84,7 +96,7 @@
 
 
 ;; Theory: Functions returning functions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; When calling a function, it always returns a value.
 
@@ -107,7 +119,7 @@
 
 
 ;; Polymorphism - many forms
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; To understand comp we also need to understand polymorphism in Clojure
 
@@ -122,8 +134,10 @@
 ;; then this part of the `comp` definition is evaluated
 ([] identity)
 
+
 ;; For example
 ((comp) [1 2 3 4 5])
+
 
 ;; This returns the function `identity`,
 ;; When calling `identity` with an argument, it will return the argument.
@@ -133,6 +147,7 @@
 ;; will return that argument assuming it is a function that can be called.
 
 ([f] f)
+
 
 ;; For example:
 ((comp first) [1 2 3 4 5])
@@ -154,6 +169,8 @@
 
 ;; For example
 ((comp rest reverse) [1 2 3 4])
+
+
 ;; => (3 2 1)
 
 
@@ -163,9 +180,8 @@
  (reduce1 comp (list* f g fs)))
 
 
-
 ;; Example from 4Clojure #19 Last Element
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Write a function which returns the last element in a sequence.
 ;; Special restriction: `last`
@@ -176,6 +192,7 @@
 ;; We can use `comp` to solve this by composing `reverse` and `first`
 
 (comp first reverse)
+
 
 ;; When executing this code, `comp` returns a function definition
 ;; that will be used with the arguments (in our case, the collection).
@@ -189,10 +206,12 @@
   ([x y z] (first (reverse x y z)))
   ([x y z & args] (first (apply reverse x y z args))))
 
+
 ;; This may look a little complicated at first, as its a polymorphic function.  It does different behaviour depending on the number of arguments passed to the function.
 
 ;; calling this with our 4Clojure test data, the function path with one argument is called
 ([x] (first (reverse x)))
+
 
 ;; lets call the function returned by comp with the collection argument from our 4Clojure exercise.
 ((fn
@@ -202,15 +221,14 @@
    ([x y z] (first (reverse x y z)))
    ([x y z & args] (first (apply reverse x y z args))))
  [1 2 3 4 5])
+
+
 ;; => 5
 
 
 
-
-
-
 ;; Writing our own function
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; Write a function that returns a function definition
@@ -240,7 +258,6 @@
           " and then call " f "on the result"))))
 
 
-
 ;; To solve the first test in this challenge
 
 (fn
@@ -249,6 +266,7 @@
   ([f g]
    (fn [x]
      (f (g x)))))
+
 
 ;; Lets use this function definition in the first test
 
@@ -268,8 +286,10 @@
 #_(= [3 2 1]
      ((__ rest reverse) [1 2 3 4]))
 
+
 #_(= 5
      ((__ (partial + 3) second) [1 2 3 4]))
+
 
 ;; The third and fourth tests take 3 arguments
 ;; so we could simply add another expression to call
@@ -284,6 +304,7 @@
   ([f g h]
    (fn [x]
      (f (g (h x))))))
+
 
 ;; But we see that we also have multiple arguments...
 
@@ -303,6 +324,7 @@
    (fn [& x]
      (f (g (reduce h x))))))
 
+
 ;; This gives a golf score of 104
 
 
@@ -320,13 +342,14 @@
  3 5 7 9)
 
 
-
 ;; Our code is quite brittle though
 ;; so we could make it more flexible for multiple functions
 
-(fn [& x]         ; a collection of functions to call
+(fn [& x]
+  ;; a collection of functions to call
 
-  (fn [& y]       ; a collection of values to use with the functions
+  (fn [& y]
+    ;; a collection of values to use with the functions
 
     (reduce
       (fn [last-function rest-of-functions]
@@ -336,7 +359,6 @@
       (apply (last x) y)  ; The last function from the collection of functions
 
       (rest (reverse x))  ; The rest of the collections of functions in reverse order
-
       )))
 
 
@@ -360,11 +382,13 @@
               )))
   zero? #(mod % 8) +)
  3 5 7 9)
+
+
 ;; => true
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 (fn [& x]
@@ -372,12 +396,13 @@
     (reduce #(%2 %1)
             (apply (last x) y) (rest (reverse x)))))
 
+
 ;; Coding Golf Score: 62
 
 
 
 ;; Other interesting solutions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; into caught my eye, but otherwise it seems strange...
@@ -385,6 +410,5 @@
    ((reduce
       (fn [v f] [(apply f v)])
       x
-      (into () %&)
-      )
+      (into () %&))
     0))

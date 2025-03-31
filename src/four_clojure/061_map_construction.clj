@@ -1,7 +1,8 @@
 (ns four-clojure.061-map-construction)
 
+
 ;; #61 - Map Construction
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Difficulty:	Easy
 ;; Topics:	core-functions
 ;; Special Restrictions: zipmap
@@ -15,21 +16,29 @@
 
 
 ;; Using zipmap
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; If we could use zipmap then the answer would be simple
 
 (= (zipmap [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
+
+
 ;; => true
 
 (= (zipmap [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
+
+
 ;; => true
 
 (= (zipmap [:foo :bar] ["foo" "bar" "baz"]) {:foo "foo", :bar "bar"})
+
+
 ;; => true
 
 ;; check if keys are unique, duplicates will overwrite previous associations
 (zipmap [:a :b :a] [1 2 3])
+
+
 ;; => {:a 3, :b 2}
 
 
@@ -63,9 +72,8 @@
 
 
 
-
 ;; Analyse the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Take the first element from each of the collections passed as arguments
 ;; Combine each element into a pair of values and keep them safe
@@ -79,12 +87,16 @@
 ;; vector puts its arguments into a vector
 
 (vector 1 2 3 4)
+
+
 ;; => [1 2 3 4]
 
 
 ;; map will iterate a function over one or more collections
 
-(map vector [:a :b :c] [1 2 3] )
+(map vector [:a :b :c] [1 2 3])
+
+
 ;; => ([:a 1] [:b 2] [:c 3])
 
 
@@ -93,12 +105,16 @@
 ;; that map passes to that function each time.
 
 (map vector [:a :b :c] [1 2 3] ["carrot" "beetroot" "kale"])
+
+
 ;; => ([:a 1 "carrot"] [:b 2 "beetroot"] [:c 3 "kale"])
 
 ;; If there is a different number of values in the collections,
 ;; map will stop when it reaches the end of the collection with the fewest values.
 
 (map vector [:a :b :c] [1 2 3 4] ["carrot" "beetroot" "kale" "celery"])
+
+
 ;; => ([:a 1 "carrot"] [:b 2 "beetroot"] [:c 3 "kale"])
 
 
@@ -107,7 +123,7 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; We want to create a paring of values from the first and second vectors
 ;; Then each pair should be made into a key value pair within a map data structure.
 
@@ -116,36 +132,52 @@
 ;; The hash-map function creates a map type collection
 
 (hash-map :a 1 :b 2)
+
+
 ;; => {:b 2, :a 1}
 
 ;; we could use the map fuction with hash-map to create each pair in a map.
 
 (map hash-map [:a :b :c] [1 2 3])
+
+
 ;; => ({:a 1} {:b 2} {:c 3})
 
 ;; now we just need to put all the maps into one map, so perhaps merge will work
 
 (merge (map hash-map [:a :b :c] [1 2 3]))
+
+
 ;; => ({:a 1} {:b 2} {:c 3})
 
 ;; merge takes multiple maps as arguments, it does not merge a sequence of maps
 
 (reduce merge (map hash-map [:a :b :c] [1 2 3]))
+
+
 ;; => {:c 3, :b 2, :a 1}
 
 ;; Any other approaches?
 
 (flatten (map hash-map [:a :b :c] [1 2 3]))
+
+
 ;; => ({:a 1} {:b 2} {:c 3})
 
 (mapcat hash-map [:a :b :c] [1 2 3])
+
+
 ;; => ([:a 1] [:b 2] [:c 3])
 
 
 (conj (map hash-map [:a :b :c] [1 2 3]))
+
+
 ;; => ({:a 1} {:b 2} {:c 3})
 
 (reduce conj (map hash-map [:a :b :c] [1 2 3]))
+
+
 ;; => {:c 3, :b 2, :a 1}
 
 
@@ -155,11 +187,14 @@
 (fn [ks vs]
   (reduce conj (map hash-map ks vs)))
 
+
 ;; lets test that function definition with one of the challenges
 
 ((fn [ks vs]
    (reduce conj (map hash-map ks vs)))
  [:a :b :c] [1 2 3])
+
+
 ;; => {:c 3, :b 2, :a 1}
 
 
@@ -169,7 +204,7 @@
 
 
 ;; reduce conj is an idiom in clojure
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; using reduce conj on sequences of values in Clojure is very common,
 ;; so much so that there is a general function that does this
@@ -188,29 +223,32 @@
   (into {} (map hash-map ks vs)))
 
 
-
 ((fn [ks vs]
    (into {}
          (map hash-map ks vs)))
  [:a :b :c] [1 2 3])
+
+
 ;; => {:a 1, :b 2, :c 3}
 
 
 
-
-
 ;; When to use zipmap
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 ;; Use zipmap when you want to directly construct a hashmap from separate sequences of keys and values. The output is a hashmap:
 
 (zipmap [:k1 :k2 :k3] [10 20 40])
+
+
 ;; => {:k3 40, :k2 20, :k1 10}
 
 ;; Use (map vector ) when you are trying to merge multiple sequences. The output is a lazy sequence of vectors:
 
 (map vector [1 2 3] [4 5 6] [7 8 9])
+
+
 ;; => ([1 4 7] [2 5 8] [3 6 9])
 
 
@@ -270,7 +308,7 @@
 ;; when
 
 ;; (zip-map [:a :b :c] [1 2 3])
-;;=> {:a 1, :b 2, :c 3}
+;; => {:a 1, :b 2, :c 3}
 ;; as before.
 
 ;; The function imitates the standard zipmap, which you can find explained, complete with source code, in the official docs or ClojureDocs, which also gives examples. Both these sites help you to pick your way through the Clojure vocabulary.
@@ -279,14 +317,13 @@
 
 
 
-
-
 ;; Answer
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 (fn [ks vs]
   (into {}
         (map vector ks vs)))
+
 
 ;; Code Golf Score:
 
@@ -296,5 +333,6 @@
 
 (comp (partial apply sorted-map) interleave)
 
+
 ((comp (partial apply sorted-map) interleave)
- [:a :b :c] [1 2 3]);; => {:a 1, :b 2, :c 3}
+ [:a :b :c] [1 2 3]); => {:a 1, :b 2, :c 3}

@@ -1,7 +1,8 @@
 (ns four-clojure.028-flatten-a-sequence)
 
+
 ;; #028 Flatten a Sequence
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Easy
 ;; Topics:	seqs core-functions
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; As `flatten` is restricted, it probably solves the problem for us by itself.
 
@@ -45,6 +46,7 @@
            (rest (tree-seq sequential? seq x))))
  '((1 2) 3 [4 [5 6]]))
 
+
 ((fn [x]
    (filter (complement sequential?)
            (rest (tree-seq sequential? seq x))))
@@ -57,14 +59,14 @@
  '((((:a)))))
 
 
-
-
 ;; Useful snippet: "merge" two or more vectors with `(comp vec flatten vector)`
 (let [a [{:a "hi"} {:b "hey"}]
       b [{:c "yo"} {:d "hiya"}]
       c {:e ["hola" "bonjour"]}]
   ((comp vec flatten vector) a b c))
-;;=> [{:a "hi"} {:b "hey"} {:c "yo"} {:d "hiya"} {:e ["hola" "bonjour"]}]
+
+
+;; => [{:a "hi"} {:b "hey"} {:c "yo"} {:d "hiya"} {:e ["hola" "bonjour"]}]
 
 ;; The `merge` function may actually be better in this case.
 ;; `flatten` can be quite a blunt tool
@@ -74,7 +76,7 @@
 
 
 ;; REPL experiments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; mapcat calls the function with x if coll? is true but what exactly map+concat mapping
 
@@ -88,11 +90,13 @@
 
 ;; I have tried to change to map and take first example
 
-((fn flat [x]
+((fn flat
+   [x]
    (if (coll? x)
      (map flat x)
      (list x)))
  '((1 2) 3 [4 [5 6]]))
+
 
 ;; => (((1) (2)) (3) ((4) ((5) (6))))
 
@@ -115,13 +119,13 @@
 
 
 
-
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 
 
-(fn flat [x]
-(if (coll? x)
-  (mapcat flat x)
-  (list x)))
+(fn flat
+  [x]
+  (if (coll? x)
+    (mapcat flat x)
+    (list x)))

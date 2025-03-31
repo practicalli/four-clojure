@@ -1,7 +1,8 @@
 (ns four-clojure.014-intro-to-functions)
 
+
 ;; #014 Intro to functions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; Difficulty:	Elementary
 ;; Topics:
@@ -15,7 +16,7 @@
 
 
 ;; Deconstruct the problem
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 ;; `defn` is used to define a function that will be used by one or more other functions in a namespace
 
@@ -25,15 +26,20 @@
 ;; defining a function as a lambda
 (fn name-optional [arg] (str arg))
 
+
 ;; To use this function we need to put it into a list and give it an argument, the second element of the list
 
 ((fn name-optional [arg] (str arg)) "I love lambda")
+
+
 ;; => "I love lambda"
 
 
 ;; We can call the first test and see the result
 
 ((fn add-five [x] (+ x 5)) 3)
+
+
 ;; => 8
 
 ;; There is a short version of the lambda function definition, using the `#()` reader macro.
@@ -42,14 +48,18 @@
 ;; %2 represents the second argument and so on.
 #(+ % 5)
 
+
 ;; and just like the normal form of function definition, we need to place it in a list to call the function.
 (#(+ % 5) 3)
+
 
 ;; We can see what Clojure does when it sees this short form by using the function macroexpand,
 ;; as the `#()` is a macro, then the Clojure reader passes the code to the macro reader.
 ;; The macro reader expands the macro into Clojure code and passes it back to the Clojure reader.
 (macroexpand
- '#(+ % 5))
+  '#(+ % 5))
+
+
 ;; => (fn* [p1__13678#] (+ p1__13678# 5))
 
 
@@ -60,10 +70,12 @@
 ;; so sometimes a lambda function will be needed instead.
 
 ((partial + 5) 3)
+
+
 ;; => 8
 
 
 ;; Answers summary
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
 8
