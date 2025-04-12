@@ -1,10 +1,5 @@
-{
- ;; Paths - directories in the current project to include in the classpath
-
+{;; Paths - directories in the current project to include in the classpath
  :paths ["src" "resources"]
 
- ;; External dependencies
-
- :deps {org.clojure/clojure {:mvn/version "1.10.1"}}
-
- }
+ ;; Project dependencies
+ :deps {org.clojure/clojure {:mvn/version "1.12.0"}}}
